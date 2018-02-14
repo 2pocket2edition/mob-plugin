@@ -97,7 +97,6 @@ public class MobPlugin extends PluginBase implements Listener {
                     Enderman.class
             };
     private int counter = 0;
-    private Config pluginConfig = null;
 
     /**
      * @param type
@@ -126,22 +125,11 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public void onEnable() {
-        // Config reading and writing
-        this.saveDefaultConfig();
-        pluginConfig = getConfig();
-
-        // we need this flag as it's controlled by the plugin's entities
-        MOB_AI_ENABLED = pluginConfig.getBoolean("entities.mob-ai", true);
-        int spawnDelay = pluginConfig.getInt("entities.auto-spawn-tick", 0);
-
         // register as listener to plugin events
         this.getServer().getPluginManager().registerEvents(this, this);
+        this.getServer().getScheduler().scheduleRepeatingTask(this, new AutoSpawnTask(), 300, true);
 
-        if (spawnDelay > 0) {
-            this.getServer().getScheduler().scheduleRepeatingTask(this, new AutoSpawnTask(), spawnDelay, true);
-        }
-
-        Utils.logServerInfo(String.format("Plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
+        Utils.logServerInfo(String.format("Plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, 300));
     }
 
     @Override
@@ -216,16 +204,6 @@ public class MobPlugin extends PluginBase implements Listener {
             }
         }
         return true;
-
-    }
-
-    /**
-     * Returns plugin specific yml configuration
-     *
-     * @return a {@link Config} instance
-     */
-    public Config getPluginConfig() {
-        return this.pluginConfig;
     }
 
     private void registerEntities() {
@@ -456,9 +434,8 @@ public class MobPlugin extends PluginBase implements Listener {
         }
     }
 
-    @EventHandler
-    public void handleChunkPopulate(ChunkPopulateEvent event) {
-        if (EnumDimension.getFromWorld(event.getLevel()) == EnumDimension.OVERWORLD && Utils.rand(0, 5) == 2) {
+    public static void ChunkPopulateEvent(ChunkPopulateEvent event) {
+        if (EnumDimension.getFromWorld(event.getLevel()) == EnumDimension.OVERWORLD && Utils.rand(0, 12) == 2) {
             //spawn random pack of animals
             Class<? extends Entity> entity = animals[Utils.rand(0, animals.length)];
             FullChunk chunk = event.getChunk();
@@ -467,6 +444,9 @@ public class MobPlugin extends PluginBase implements Listener {
                 int xPos = (chunk.getX() << 4) | Utils.rand(0, 15);
                 int zPos = (chunk.getZ() << 4) | Utils.rand(0, 15);
                 int yPos = chunk.getHighestBlockAt(xPos & 0xF, zPos & 0xF);
+                if (yPos <= 64) {
+                    return;
+                }
                 Entity entityObj = create(entity.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
                 event.getLevel().addEntity(entityObj);
             }
