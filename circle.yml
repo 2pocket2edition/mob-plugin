@@ -1,9 +1,0 @@
-checkout:
-  post:
-    - mvn clean
-    - mvn package
-    - cp -R ./target/MobPlugin-1.0.jar $CIRCLE_ARTIFACTS
-
-machine:
-  java:
-    version: oraclejdk8
