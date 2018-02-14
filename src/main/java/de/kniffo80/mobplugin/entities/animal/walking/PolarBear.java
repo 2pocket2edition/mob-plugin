@@ -19,7 +19,7 @@ public class PolarBear extends WalkingAnimal {
     public int getNetworkId() {
         return NETWORK_ID;
     }
-    
+
     @Override
     public String getName() {
         return "PolarBear";
@@ -53,7 +53,7 @@ public class PolarBear extends WalkingAnimal {
     public double getSpeed() {
         return 1.25;
     }
-    
+
     @Override
     public boolean isBaby() {
         return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);

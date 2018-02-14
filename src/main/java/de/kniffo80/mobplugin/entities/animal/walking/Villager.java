@@ -1,10 +1,11 @@
 package de.kniffo80.mobplugin.entities.animal.walking;
 
 import cn.nukkit.entity.Entity;
-import static cn.nukkit.entity.passive.EntityVillager.PROFESSION_GENERIC;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import de.kniffo80.mobplugin.entities.animal.WalkingAnimal;
+
+import static cn.nukkit.entity.passive.EntityVillager.PROFESSION_GENERIC;
 
 public class Villager extends WalkingAnimal {
 
@@ -18,7 +19,7 @@ public class Villager extends WalkingAnimal {
     public int getNetworkId() {
         return NETWORK_ID;
     }
-    
+
     @Override
     public String getName() {
         return "Villager";

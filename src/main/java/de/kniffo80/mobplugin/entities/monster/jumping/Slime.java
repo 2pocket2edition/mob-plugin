@@ -51,7 +51,7 @@ public class Slime extends WalkingMonster {
         this.setMaxHealth(16);
         super.initEntity();
 
-        this.setDamage(new int[] { 0, 2, 3, 4 });
+        this.setDamage(new int[]{0, 2, 3, 4});
     }
 
     public void attackEntity(Entity player) {
@@ -113,7 +113,7 @@ public class Slime extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return 4;
     }
 

@@ -58,7 +58,7 @@ public class Spider extends WalkingMonster {
         super.initEntity();
 
         this.setMaxHealth(16);
-        this.setDamage(new int[] { 0, 2, 2, 3 });
+        this.setDamage(new int[]{0, 2, 2, 3});
     }
 
     @Override
@@ -157,7 +157,7 @@ public class Spider extends WalkingMonster {
             if (this.onGround) {
                 this.motionY = 0;
             } else if (this.motionY > -this.getGravity() * 4
-                       && !(this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z))) instanceof BlockLiquid)) {
+                    && !(this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z))) instanceof BlockLiquid)) {
                 this.motionY -= this.getGravity() * 1;
             } else {
                 this.motionY -= this.getGravity() * tickDiff;
@@ -197,46 +197,46 @@ public class Spider extends WalkingMonster {
         int time = player.getLevel().getTime() % Level.TIME_FULL;
         if (!this.isFriendly() || !(player instanceof Player)) {
             if (time > 13184 && time < 22800) { //TODO: better fix
-            this.attackDelay = 0;
-            HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
+                this.attackDelay = 0;
+                HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
+                damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
 
-            if (player instanceof Player) {
-                @SuppressWarnings("serial")
-                HashMap<Integer, Float> armorValues = new HashMap<Integer, Float>() {
+                if (player instanceof Player) {
+                    @SuppressWarnings("serial")
+                    HashMap<Integer, Float> armorValues = new HashMap<Integer, Float>() {
 
-                    {
-                        put(Item.LEATHER_CAP, 1f);
-                        put(Item.LEATHER_TUNIC, 3f);
-                        put(Item.LEATHER_PANTS, 2f);
-                        put(Item.LEATHER_BOOTS, 1f);
-                        put(Item.CHAIN_HELMET, 1f);
-                        put(Item.CHAIN_CHESTPLATE, 5f);
-                        put(Item.CHAIN_LEGGINGS, 4f);
-                        put(Item.CHAIN_BOOTS, 1f);
-                        put(Item.GOLD_HELMET, 1f);
-                        put(Item.GOLD_CHESTPLATE, 5f);
-                        put(Item.GOLD_LEGGINGS, 3f);
-                        put(Item.GOLD_BOOTS, 1f);
-                        put(Item.IRON_HELMET, 2f);
-                        put(Item.IRON_CHESTPLATE, 6f);
-                        put(Item.IRON_LEGGINGS, 5f);
-                        put(Item.IRON_BOOTS, 2f);
-                        put(Item.DIAMOND_HELMET, 3f);
-                        put(Item.DIAMOND_CHESTPLATE, 8f);
-                        put(Item.DIAMOND_LEGGINGS, 6f);
-                        put(Item.DIAMOND_BOOTS, 3f);
+                        {
+                            put(Item.LEATHER_CAP, 1f);
+                            put(Item.LEATHER_TUNIC, 3f);
+                            put(Item.LEATHER_PANTS, 2f);
+                            put(Item.LEATHER_BOOTS, 1f);
+                            put(Item.CHAIN_HELMET, 1f);
+                            put(Item.CHAIN_CHESTPLATE, 5f);
+                            put(Item.CHAIN_LEGGINGS, 4f);
+                            put(Item.CHAIN_BOOTS, 1f);
+                            put(Item.GOLD_HELMET, 1f);
+                            put(Item.GOLD_CHESTPLATE, 5f);
+                            put(Item.GOLD_LEGGINGS, 3f);
+                            put(Item.GOLD_BOOTS, 1f);
+                            put(Item.IRON_HELMET, 2f);
+                            put(Item.IRON_CHESTPLATE, 6f);
+                            put(Item.IRON_LEGGINGS, 5f);
+                            put(Item.IRON_BOOTS, 2f);
+                            put(Item.DIAMOND_HELMET, 3f);
+                            put(Item.DIAMOND_CHESTPLATE, 8f);
+                            put(Item.DIAMOND_LEGGINGS, 6f);
+                            put(Item.DIAMOND_BOOTS, 3f);
+                        }
+                    };
+
+                    float points = 0;
+                    for (Item i : ((Player) player).getInventory().getArmorContents()) {
+                        points += armorValues.getOrDefault(i.getId(), 0f);
                     }
-                };
-
-                float points = 0;
-                for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    damage.put(EntityDamageEvent.DamageModifier.ARMOR,
+                            (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
                 }
-                damage.put(EntityDamageEvent.DamageModifier.ARMOR,
-                        (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
-            }
-            player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
+                player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
             }
         }
     }
@@ -247,10 +247,10 @@ public class Spider extends WalkingMonster {
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int strings = Utils.rand(0, 3); // drops 0-2 strings
             int spiderEye = Utils.rand(0, 3) == 0 ? 1 : 0; // with a 1/3 chance it drops a spider eye
-            for (int i=0; i < strings; i++) {
+            for (int i = 0; i < strings; i++) {
                 drops.add(Item.get(Item.STRING, 0, 1));
             }
-            for (int i=0; i < spiderEye; i++) {
+            for (int i = 0; i < spiderEye; i++) {
                 drops.add(Item.get(Item.SPIDER_EYE, 0, 1));
             }
         }
@@ -258,7 +258,7 @@ public class Spider extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return 5; // gain 5 experience
     }
 

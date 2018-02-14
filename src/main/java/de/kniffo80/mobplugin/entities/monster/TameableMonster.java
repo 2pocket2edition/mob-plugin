@@ -1,6 +1,6 @@
 /**
  * TameableMonster.java
- * 
+ * <p>
  * Created on 16:54:00
  */
 package de.kniffo80.mobplugin.entities.monster;
@@ -18,11 +18,11 @@ import de.kniffo80.mobplugin.entities.Tameable;
  */
 public abstract class TameableMonster extends WalkingMonster implements Tameable {
 
-    private Server          server          = null;
+    private Server server = null;
 
-    private Player          owner           = null;
+    private Player owner = null;
 
-    private boolean         sitting         = false;
+    private boolean sitting = false;
 
     public TameableMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -41,7 +41,7 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
                 this.setSitting(namedTag.getBoolean(NAMED_TAG_SITTING));
             }
         }
-        
+
     }
 
     @Override
@@ -85,9 +85,9 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
         this.sitting = flag;
         setSittingDataProperty(flag);
     }
-    
-    
-    private void setTamed (boolean tamed) {
+
+
+    private void setTamed(boolean tamed) {
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_TAMED, tamed);
         // following code isn't working
 //        int var = getDataPropertyByte(DATA_TAMED_FLAG);
@@ -98,7 +98,7 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
 //            setDataProperty(new ByteEntityData(DATA_TAMED_FLAG, Byte.valueOf((byte) (var & -5))));
 //        }
     }
-    
+
     private void setSittingDataProperty(boolean sit) {
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_SITTING, sit);
         // following code isn't working
@@ -110,5 +110,5 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
 //            setDataProperty(new ByteEntityData(DATA_TAMED_FLAG, (byte) (var & -2)));
 //        }
     }
-    
+
 }

@@ -52,7 +52,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 //        if (this.getDataProperty(DATA_AGEABLE_FLAGS) == null) {
 //            this.setDataProperty(new ByteEntityData(DATA_AGEABLE_FLAGS, (byte) 0));
 //        }
-        this.setDamage(new int[] { 0, 2, 3, 4 });
+        this.setDamage(new int[]{0, 2, 3, 4});
         setMaxHealth(20);
     }
 
@@ -68,13 +68,13 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
         if (this.isAlive()) {
             if (15 < this.getHealth()) {
-                this.setDamage(new int[] { 0, 2, 3, 4 });
+                this.setDamage(new int[]{0, 2, 3, 4});
             } else if (10 < this.getHealth()) {
-                this.setDamage(new int[] { 0, 3, 4, 6 });
+                this.setDamage(new int[]{0, 3, 4, 6});
             } else if (5 < this.getHealth()) {
-                this.setDamage(new int[] { 0, 3, 5, 7 });
+                this.setDamage(new int[]{0, 3, 5, 7});
             } else {
-                this.setDamage(new int[] { 0, 4, 6, 9 });
+                this.setDamage(new int[]{0, 4, 6, 9});
             }
         }
     }
@@ -147,7 +147,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int rottenFlesh = Utils.rand(0, 3); // drops 0-2 rotten flesh
-            for (int i=0; i < rottenFlesh; i++) {
+            for (int i = 0; i < rottenFlesh; i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
             }
         }
@@ -155,7 +155,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     }
 
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return 5; // gain 5 experience
     }
 

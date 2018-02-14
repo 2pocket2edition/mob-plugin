@@ -1,6 +1,6 @@
 /**
  * EntitySpawner.java
- * 
+ * <p>
  * Created on 10:38:53
  */
 package de.kniffo80.mobplugin.entities.autospawn;
@@ -17,12 +17,11 @@ import java.util.List;
  */
 public interface IEntitySpawner {
 
-    public void spawn(List<Player> onlinePlayers);
+    void spawn(List<Player> onlinePlayers);
 
-    public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level);
-    
-    public int getEntityNetworkId ();
-    
-    public String getEntityName ();
+    SpawnResult spawn(IPlayer iPlayer, Position pos, Level level);
 
+    int getEntityNetworkId();
+
+    String getEntityName();
 }

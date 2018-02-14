@@ -49,7 +49,7 @@ public class ElderGuardian extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-    //TODO
+        //TODO
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ElderGuardian extends WalkingMonster {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int prismarineShard = Utils.rand(0, 3); // drops 0-2 prismarine shard
-            for (int i=0; i < prismarineShard; i++) {
+            for (int i = 0; i < prismarineShard; i++) {
                 drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
             }
         }

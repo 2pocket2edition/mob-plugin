@@ -1,6 +1,6 @@
 /**
  * Utils.java
- * 
+ * <p>
  * Created on 10:18:38
  */
 package de.kniffo80.mobplugin.utils;
@@ -15,18 +15,17 @@ import java.util.Random;
  *
  */
 public class Utils {
-    
+
     private static final Server SERVER = Server.getInstance();
-    
-    public static final void logServerInfo (String text) {
+    private static final Random random = new Random(System.currentTimeMillis());
+
+    public static final void logServerInfo(String text) {
         SERVER.getLogger().info(TextFormat.GOLD + "[MobPlugin] " + text);
     }
-    
-    private static final Random random = new Random(System.currentTimeMillis());
 
     /**
      * Returns a random number between min (inkl.) and max (excl.) If you want a number between 1 and 4 (inkl) you need to call rand (1, 5)
-     * 
+     *
      * @param min min inklusive value
      * @param max max exclusive value
      * @return
@@ -40,7 +39,7 @@ public class Utils {
 
     /**
      * Returns random boolean
-     * @return  a boolean random value either <code>true</code> or <code>false</code>
+     * @return a boolean random value either <code>true</code> or <code>false</code>
      */
     public static boolean rand() {
         return random.nextBoolean();

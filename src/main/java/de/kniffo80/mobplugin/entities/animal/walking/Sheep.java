@@ -99,13 +99,13 @@ public class Sheep extends WalkingAnimal {
         return drops.toArray(new Item[drops.size()]);
     }
 
+    public int getColor() {
+        return namedTag.getByte("Color");
+    }
+
     public void setColor(int color) {
         this.color = color;
         this.setDataProperty(new ByteEntityData(DATA_COLOUR, color));
-    }
-
-    public int getColor() {
-        return namedTag.getByte("Color");
     }
 
     private int randomColor() {

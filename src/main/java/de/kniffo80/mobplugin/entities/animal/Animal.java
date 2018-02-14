@@ -1,6 +1,6 @@
 /**
  * Animal.java
- * 
+ * <p>
  * Created on 14:44:07
  */
 package de.kniffo80.mobplugin.entities.animal;

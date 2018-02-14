@@ -18,13 +18,10 @@ import de.kniffo80.mobplugin.utils.Utils;
 
 public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
-    private int[]   minDamage;
-
-    private int[]   maxDamage;
-
-    protected int   attackDelay = 0;
-
-    private boolean canAttack   = true;
+    protected int attackDelay = 0;
+    private int[] minDamage;
+    private int[] maxDamage;
+    private boolean canAttack = true;
 
     public WalkingMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -44,12 +41,35 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         return getDamage(null);
     }
 
+    public void setDamage(int[] damage) {
+        if (damage.length < 4) {
+            return;
+        }
+
+        if (minDamage == null || minDamage.length < 4) {
+            minDamage = new int[]{0, 0, 0, 0};
+        }
+
+        if (maxDamage == null || maxDamage.length < 4) {
+            maxDamage = new int[]{0, 0, 0, 0};
+        }
+
+        for (int i = 0; i < 4; i++) {
+            this.minDamage[i] = damage[i];
+            this.maxDamage[i] = damage[i];
+        }
+    }
+
     public int getDamage(Integer difficulty) {
         return Utils.rand(this.getMinDamage(difficulty), this.getMaxDamage(difficulty));
     }
 
     public int getMinDamage() {
         return getMinDamage(null);
+    }
+
+    public void setMinDamage(int damage) {
+        this.setMinDamage(damage, Server.getInstance().getDifficulty());
     }
 
     public int getMinDamage(Integer difficulty) {
@@ -61,6 +81,10 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     public int getMaxDamage() {
         return getMaxDamage(null);
+    }
+
+    public void setMaxDamage(int damage) {
+        setMinDamage(damage, Server.getInstance().getDifficulty());
     }
 
     public int getMaxDamage(Integer difficulty) {
@@ -81,25 +105,6 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         }
     }
 
-    public void setDamage(int[] damage) {
-        if (damage.length < 4) {
-            return;
-        }
-
-        if (minDamage == null || minDamage.length < 4) {
-            minDamage = new int[] { 0, 0, 0, 0 };
-        }
-
-        if (maxDamage == null || maxDamage.length < 4) {
-            maxDamage = new int[] { 0, 0, 0, 0 };
-        }
-
-        for (int i = 0; i < 4; i++) {
-            this.minDamage[i] = damage[i];
-            this.maxDamage[i] = damage[i];
-        }
-    }
-
     public void setMinDamage(int[] damage) {
         if (damage.length < 4) {
             return;
@@ -108,10 +113,6 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         for (int i = 0; i < 4; i++) {
             this.setMinDamage(Math.min(damage[i], this.getMaxDamage(i)), i);
         }
-    }
-
-    public void setMinDamage(int damage) {
-        this.setMinDamage(damage, Server.getInstance().getDifficulty());
     }
 
     public void setMinDamage(int damage, int difficulty) {
@@ -127,10 +128,6 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         for (int i = 0; i < 4; i++) {
             this.setMaxDamage(Math.max(damage[i], this.getMinDamage(i)), i);
         }
-    }
-
-    public void setMaxDamage(int damage) {
-        setMinDamage(damage, Server.getInstance().getDifficulty());
     }
 
     public void setMaxDamage(int damage, int difficulty) {
@@ -174,11 +171,11 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
-        
+
         boolean hasUpdate = false;
-        
+
         Timings.entityBaseTickTimer.startTiming();
-        
+
         hasUpdate = super.entityBaseTick(tickDiff);
 
         this.attackDelay += tickDiff;

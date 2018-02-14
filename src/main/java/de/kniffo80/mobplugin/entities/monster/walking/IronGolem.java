@@ -49,8 +49,8 @@ public class IronGolem extends WalkingMonster {
         this.setMaxHealth(100);
         super.initEntity();
 
-        this.setDamage(new int[] { 0, 21, 21, 21 });
-        this.setMinDamage(new int[] { 0, 7, 7, 7 });
+        this.setDamage(new int[]{0, 21, 21, 21});
+        this.setMinDamage(new int[]{0, 7, 7, 7});
     }
 
     public void attackEntity(Entity player) {
@@ -101,25 +101,25 @@ public class IronGolem extends WalkingMonster {
     public boolean targetOption(EntityCreature creature, double distance) {
         return !(creature instanceof Player) && creature.isAlive() && distance <= 60;
     }
-    
+
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int ironIngots = Utils.rand(3, 6); // drops 3-5 iron ingots
             int poppies = Utils.rand(0, 3); // drops 0-2 poppies
-            for (int i=0; i < ironIngots; i++) {
+            for (int i = 0; i < ironIngots; i++) {
                 drops.add(Item.get(Item.IRON_INGOT, 0, 1));
             }
-            for (int i=0; i < poppies; i++) {
+            for (int i = 0; i < poppies; i++) {
                 drops.add(Item.get(Item.POPPY, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return 0; // gain 0 experience
     }
 

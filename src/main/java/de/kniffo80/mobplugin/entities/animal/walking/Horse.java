@@ -1,6 +1,6 @@
 /**
  * Horse.java
- *
+ * <p>
  * Created on 09:40:15
  */
 package de.kniffo80.mobplugin.entities.animal.walking;

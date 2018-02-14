@@ -7,12 +7,12 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
-import de.kniffo80.mobplugin.entities.animal.flying.*;
-import de.kniffo80.mobplugin.entities.animal.jumping.*;
+import de.kniffo80.mobplugin.entities.animal.flying.Bat;
+import de.kniffo80.mobplugin.entities.animal.jumping.Rabbit;
 import de.kniffo80.mobplugin.entities.animal.walking.*;
 import de.kniffo80.mobplugin.entities.autospawn.IEntitySpawner;
-import de.kniffo80.mobplugin.entities.monster.flying.*;
-import de.kniffo80.mobplugin.entities.monster.jumping.*;
+import de.kniffo80.mobplugin.entities.monster.flying.Blaze;
+import de.kniffo80.mobplugin.entities.monster.flying.Ghast;
 import de.kniffo80.mobplugin.entities.monster.walking.*;
 import de.kniffo80.mobplugin.entities.spawners.*;
 import de.kniffo80.mobplugin.utils.Utils;
@@ -25,13 +25,13 @@ import java.util.Map;
 
 public class AutoSpawnTask implements Runnable {
 
-    private Map<Integer, Integer> maxSpawns      = new HashMap<>();
+    private Map<Integer, Integer> maxSpawns = new HashMap<>();
 
-    private List<IEntitySpawner>  entitySpawners = new ArrayList<>();
+    private List<IEntitySpawner> entitySpawners = new ArrayList<>();
 
-    private Config                pluginConfig   = null;
+    private Config pluginConfig = null;
 
-    private MobPlugin             plugin = null;
+    private MobPlugin plugin = null;
 
     public AutoSpawnTask(MobPlugin plugin) {
         this.pluginConfig = plugin.getConfig();
@@ -159,8 +159,8 @@ public class AutoSpawnTask implements Runnable {
         if (level.getBlockIdAt(x, y, z) == Block.AIR) {
             while (true) {
                 y--;
-                if (y > 127) {
-                    y = 128;
+                if (y > 255) {
+                    y = 256;
                     break;
                 }
                 if (y < 1) {
@@ -186,8 +186,8 @@ public class AutoSpawnTask implements Runnable {
         } else {
             while (true) {
                 y++;
-                if (y > 127) {
-                    y = 128;
+                if (y > 255) {
+                    y = 256;
                     break;
                 }
 

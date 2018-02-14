@@ -46,7 +46,7 @@ public class ZombieVillager extends WalkingMonster {
     public void initEntity() {
         super.initEntity();
 
-        this.setDamage(new int[] { 0, 3, 4, 6 });
+        this.setDamage(new int[]{0, 3, 4, 6});
         setMaxHealth(20);
     }
 
@@ -102,7 +102,7 @@ public class ZombieVillager extends WalkingMonster {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int rottenFlesh = Utils.rand(0, 3); // drops 0-2 rotten flesh
-            for (int i=0; i < rottenFlesh; i++) {
+            for (int i = 0; i < rottenFlesh; i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
             }
         }
@@ -110,7 +110,7 @@ public class ZombieVillager extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return 5; // gain 5 experience
     }
 

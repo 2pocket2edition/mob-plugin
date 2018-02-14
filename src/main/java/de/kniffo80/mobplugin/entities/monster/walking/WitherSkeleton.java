@@ -6,20 +6,19 @@ import cn.nukkit.item.ItemSwordStone;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
-
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
 
 public class WitherSkeleton extends WalkingMonster {
 
     public static final int NETWORK_ID = 48;
 
+    public WitherSkeleton(FullChunk chunk, CompoundTag nbt) {
+        super(chunk, nbt);
+    }
+
     @Override
     public int getNetworkId() {
         return NETWORK_ID;
-    }
-
-    public WitherSkeleton(FullChunk chunk, CompoundTag nbt) {
-        super(chunk, nbt);
     }
 
     @Override

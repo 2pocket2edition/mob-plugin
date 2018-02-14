@@ -1,6 +1,6 @@
 /**
  * MobPlugin.java
- *
+ * <p>
  * Created on 17:46:07
  */
 package de.kniffo80.mobplugin;
@@ -38,19 +38,24 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.DyeColor;
 import de.kniffo80.mobplugin.entities.BaseEntity;
-import de.kniffo80.mobplugin.entities.animal.flying.*;
-import de.kniffo80.mobplugin.entities.animal.jumping.*;
-import de.kniffo80.mobplugin.entities.animal.swimming.*;
+import de.kniffo80.mobplugin.entities.animal.flying.Bat;
+import de.kniffo80.mobplugin.entities.animal.flying.Parrot;
+import de.kniffo80.mobplugin.entities.animal.jumping.Rabbit;
+import de.kniffo80.mobplugin.entities.animal.swimming.Squid;
 import de.kniffo80.mobplugin.entities.animal.walking.*;
 import de.kniffo80.mobplugin.entities.block.BlockEntitySpawner;
-import de.kniffo80.mobplugin.entities.monster.flying.*;
-import de.kniffo80.mobplugin.entities.monster.jumping.*;
-import de.kniffo80.mobplugin.entities.monster.swimming.*;
+import de.kniffo80.mobplugin.entities.monster.flying.Blaze;
+import de.kniffo80.mobplugin.entities.monster.flying.EnderDragon;
+import de.kniffo80.mobplugin.entities.monster.flying.Ghast;
+import de.kniffo80.mobplugin.entities.monster.flying.Wither;
+import de.kniffo80.mobplugin.entities.monster.jumping.MagmaCube;
+import de.kniffo80.mobplugin.entities.monster.jumping.Slime;
+import de.kniffo80.mobplugin.entities.monster.swimming.ElderGuardian;
+import de.kniffo80.mobplugin.entities.monster.swimming.Guardian;
 import de.kniffo80.mobplugin.entities.monster.walking.*;
 import de.kniffo80.mobplugin.entities.projectile.EntityFireBall;
 import de.kniffo80.mobplugin.utils.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +69,29 @@ public class MobPlugin extends PluginBase implements Listener {
     private int counter = 0;
 
     private Config pluginConfig = null;
+
+    /**
+     * @param type
+     * @param source
+     * @param args
+     * @return
+     */
+    public static Entity create(Object type, Position source, Object... args) {
+        FullChunk chunk = source.getLevel().getChunk((int) source.x >> 4, (int) source.z >> 4, true);
+        if (!chunk.isGenerated()) {
+            chunk.setGenerated();
+        }
+        if (!chunk.isPopulated()) {
+            chunk.setPopulated();
+        }
+
+        CompoundTag nbt = new CompoundTag().putList(new ListTag<DoubleTag>("Pos").add(new DoubleTag("", source.x)).add(new DoubleTag("", source.y)).add(new DoubleTag("", source.z)))
+                .putList(new ListTag<DoubleTag>("Motion").add(new DoubleTag("", 0)).add(new DoubleTag("", 0)).add(new DoubleTag("", 0)))
+                .putList(new ListTag<FloatTag>("Rotation").add(new FloatTag("", source instanceof Location ? (float) ((Location) source).yaw : 0))
+                        .add(new FloatTag("", source instanceof Location ? (float) ((Location) source).pitch : 0)));
+
+        return Entity.createEntity(type.toString(), chunk, nbt, args);
+    }
 
     @Override
     public void onLoad() {
@@ -230,29 +258,6 @@ public class MobPlugin extends PluginBase implements Listener {
     }
 
     /**
-     * @param type
-     * @param source
-     * @param args
-     * @return
-     */
-    public static Entity create(Object type, Position source, Object... args) {
-        FullChunk chunk = source.getLevel().getChunk((int) source.x >> 4, (int) source.z >> 4, true);
-        if (!chunk.isGenerated()) {
-            chunk.setGenerated();
-        }
-        if (!chunk.isPopulated()) {
-            chunk.setPopulated();
-        }
-
-        CompoundTag nbt = new CompoundTag().putList(new ListTag<DoubleTag>("Pos").add(new DoubleTag("", source.x)).add(new DoubleTag("", source.y)).add(new DoubleTag("", source.z)))
-                .putList(new ListTag<DoubleTag>("Motion").add(new DoubleTag("", 0)).add(new DoubleTag("", 0)).add(new DoubleTag("", 0)))
-                .putList(new ListTag<FloatTag>("Rotation").add(new FloatTag("", source instanceof Location ? (float) ((Location) source).yaw : 0))
-                        .add(new FloatTag("", source instanceof Location ? (float) ((Location) source).pitch : 0)));
-
-        return Entity.createEntity(type.toString(), chunk, nbt, args);
-    }
-
-    /**
      * Returns all registered players to the current server
      *
      * @return a {@link List} containing a number of {@link IPlayer} elements,
@@ -284,6 +289,7 @@ public class MobPlugin extends PluginBase implements Listener {
     }
 
     // --- event listeners ---
+
     /**
      * This event is called when an entity dies. We need this for experience
      * gain.
@@ -389,9 +395,12 @@ public class MobPlugin extends PluginBase implements Listener {
 
         Block block = ev.getBlock();
         if ((block.getId() == Block.MONSTER_EGG)
-            && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
+                && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
 
-              Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5)); if(entity != null){ entity.spawnToAll(); }
+            Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5));
+            if (entity != null) {
+                entity.spawnToAll();
+            }
         }
     }
 

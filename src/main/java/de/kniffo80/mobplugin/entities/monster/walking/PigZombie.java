@@ -21,7 +21,7 @@ public class PigZombie extends WalkingMonster {
 
     public static final int NETWORK_ID = 36;
 
-    int                     angry      = 0;
+    int angry = 0;
 
     public PigZombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -61,7 +61,7 @@ public class PigZombie extends WalkingMonster {
         }
 
         this.fireProof = true;
-        this.setDamage(new int[] { 0, 5, 9, 13 });
+        this.setDamage(new int[]{0, 5, 9, 13});
         setMaxHealth(20);
     }
 
@@ -163,13 +163,13 @@ public class PigZombie extends WalkingMonster {
             int rottenFlesh = Utils.rand(0, 2); // drops 0-1 rotten flesh
             int goldNuggets = Utils.rand(0, 101) <= 3 ? 1 : 0; // with a 2,5% chance a gold nugget is dropped
             int goldSword = Utils.rand(0, 101) <= 9 ? 1 : 0; // with a 8,5% chance it's gold sword is dropped
-            for (int i=0; i < rottenFlesh; i++) {
+            for (int i = 0; i < rottenFlesh; i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
             }
-            for (int i=0; i < goldNuggets; i++) {
+            for (int i = 0; i < goldNuggets; i++) {
                 drops.add(Item.get(Item.GOLD_NUGGET, 0, 1));
             }
-            for (int i=0; i < goldSword; i++) {
+            for (int i = 0; i < goldSword; i++) {
                 drops.add(Item.get(Item.GOLD_SWORD, 0, 1));
             }
         }
@@ -177,7 +177,7 @@ public class PigZombie extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return 5; // gain 5 experience
     }
 
