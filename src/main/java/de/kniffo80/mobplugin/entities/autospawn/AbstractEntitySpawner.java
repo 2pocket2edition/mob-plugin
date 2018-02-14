@@ -12,6 +12,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.AutoSpawnTask;
+import de.kniffo80.mobplugin.EnumDimension;
 import de.kniffo80.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -67,12 +68,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
      * @return <code>true</code> when world spawn is allowed
      */
     private boolean isWorldSpawnAllowed(Level level) {
-        for (String worldName : this.disabledSpawnWorlds) {
-            if (level.getName().toLowerCase().equals(worldName.toLowerCase())) {
-                return false;
-            }
-        }
-        return true;
+        return canSpawnIn(EnumDimension.getFromWorld(level));
     }
 
     protected SpawnResult spawn(IPlayer iPlayer) {
@@ -139,5 +135,4 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     }
 
     protected abstract String getLogprefix();
-
 }

@@ -71,6 +71,7 @@ public class AutoSpawnTask implements Runnable {
         entitySpawners.add(new EndermanSpawner(this, this.pluginConfig));
         entitySpawners.add(new OcelotSpawner(this, this.pluginConfig));
         entitySpawners.add(new PigSpawner(this, this.pluginConfig));
+        entitySpawners.add(new PigZombieSpawner(this, this.pluginConfig));
         entitySpawners.add(new RabbitSpawner(this, this.pluginConfig));
         entitySpawners.add(new SheepSpawner(this, this.pluginConfig));
         entitySpawners.add(new SkeletonSpawner(this, this.pluginConfig));

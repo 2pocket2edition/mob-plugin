@@ -7,6 +7,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.level.generator.biome.Biome;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.AutoSpawnTask;
+import de.kniffo80.mobplugin.EnumDimension;
 import de.kniffo80.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
 import de.kniffo80.mobplugin.entities.monster.walking.Husk;
@@ -15,6 +16,10 @@ import de.kniffo80.mobplugin.entities.monster.walking.Husk;
  * @author PikyCZ
  */
 public class HuskSpawner extends AbstractEntitySpawner {
+    @Override
+    public boolean canSpawnIn(EnumDimension dimension) {
+        return dimension == EnumDimension.OVERWORLD;
+    }
 
     public HuskSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         super(spawnTask, pluginConfig);
@@ -36,7 +41,7 @@ public class HuskSpawner extends AbstractEntitySpawner {
 
         if (blockLightLevel > 7) {
             result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        } else if (pos.y > 255 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
         } else if (biomeId != Biome.DESERT) {
             result = SpawnResult.WRONG_BLOCK;

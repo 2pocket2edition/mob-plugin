@@ -11,6 +11,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.AutoSpawnTask;
+import de.kniffo80.mobplugin.EnumDimension;
 import de.kniffo80.mobplugin.entities.animal.walking.Chicken;
 import de.kniffo80.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
@@ -21,7 +22,10 @@ import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class ChickenSpawner extends AbstractEntitySpawner {
-
+    @Override
+    public boolean canSpawnIn(EnumDimension dimension) {
+        return dimension == EnumDimension.OVERWORLD;
+    }
     /**
      * @param spawnTask
      */
@@ -39,7 +43,7 @@ public class ChickenSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_BLOCK;
 //        } else if (blockLightLevel < 9) { // uncommented because lightlevel doesn't work now
 //            result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        } else if (pos.y > 255 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
         } else { // creeper is spawned
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.7, 0));

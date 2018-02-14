@@ -11,6 +11,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.AutoSpawnTask;
+import de.kniffo80.mobplugin.EnumDimension;
 import de.kniffo80.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
 import de.kniffo80.mobplugin.entities.monster.walking.Enderman;
@@ -22,6 +23,10 @@ import de.kniffo80.mobplugin.utils.Utils;
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class EndermanSpawner extends AbstractEntitySpawner {
+    @Override
+    public boolean canSpawnIn(EnumDimension dimension) {
+        return true;
+    }
 
     /**
      * @param spawnTask
@@ -49,7 +54,7 @@ public class EndermanSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_LIGHTLEVEL;
             /*} else if (biomeId != Biome.HELL) {
             result = SpawnResult.WRONG_BLOCK;*/
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        } else if (pos.y > 255 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
         } else if (time > 13184 && time < 22800) {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 3.8, 0));

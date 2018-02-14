@@ -7,6 +7,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.level.generator.biome.Biome;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.AutoSpawnTask;
+import de.kniffo80.mobplugin.EnumDimension;
 import de.kniffo80.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
 import de.kniffo80.mobplugin.entities.monster.flying.Ghast;
@@ -15,6 +16,10 @@ import de.kniffo80.mobplugin.entities.monster.flying.Ghast;
  * @author PikyCZ
  */
 public class GhastSpawner extends AbstractEntitySpawner {
+    @Override
+    public boolean canSpawnIn(EnumDimension dimension) {
+        return dimension == EnumDimension.NETHER;
+    }
 
     public GhastSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         super(spawnTask, pluginConfig);

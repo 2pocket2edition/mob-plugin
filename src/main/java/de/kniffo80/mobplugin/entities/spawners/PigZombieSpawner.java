@@ -1,5 +1,5 @@
 /**
- * CreeperSpawner.java
+ * ZombieSpawner.java
  * <p>
  * Created on 10:39:49
  */
@@ -9,19 +9,20 @@ import cn.nukkit.IPlayer;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
+import cn.nukkit.level.generator.biome.Biome;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.AutoSpawnTask;
 import de.kniffo80.mobplugin.EnumDimension;
 import de.kniffo80.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
-import de.kniffo80.mobplugin.entities.monster.walking.Creeper;
+import de.kniffo80.mobplugin.entities.monster.walking.Zombie;
 
 /**
  * Each entity get it's own spawner class.
  *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
-public class CreeperSpawner extends AbstractEntitySpawner {
+public class PigZombieSpawner extends AbstractEntitySpawner {
     @Override
     public boolean canSpawnIn(EnumDimension dimension) {
         return dimension == EnumDimension.OVERWORLD;
@@ -30,25 +31,25 @@ public class CreeperSpawner extends AbstractEntitySpawner {
     /**
      * @param spawnTask
      */
-    public CreeperSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
+    public PigZombieSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         super(spawnTask, pluginConfig);
     }
 
+    @Override
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
-        int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-        int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
-        int time = level.getTime() % Level.TIME_FULL;
+        // TODO: a zombie may also be spawned with items ... but that's to be done later
 
-        if (!Block.solid[blockId]) { // only spawns on solid blocks
+        int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+        int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+
+        if (Block.transparent[blockId]) { // only spawns on opaque blocks
             result = SpawnResult.WRONG_BLOCK;
-        } else if (blockLightLevel > 7) { // lightlevel not working for now, but as lightlevel is always zero that should work
-            result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 255 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
-            result = SpawnResult.POSITION_MISMATCH;
-        } else if (time > 13184 && time < 22800) {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+        } else if (biomeId != Biome.HELL) {
+            result = SpawnResult.WRONG_BLOCK;
+        } else {
+            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
         }
 
         return result;
@@ -59,7 +60,7 @@ public class CreeperSpawner extends AbstractEntitySpawner {
      */
     @Override
     public int getEntityNetworkId() {
-        return Creeper.NETWORK_ID;
+        return Zombie.NETWORK_ID;
     }
 
     /* (@Override)
@@ -67,7 +68,7 @@ public class CreeperSpawner extends AbstractEntitySpawner {
      */
     @Override
     public String getEntityName() {
-        return "Creeper";
+        return "Zombie";
     }
 
     /* (@Override)

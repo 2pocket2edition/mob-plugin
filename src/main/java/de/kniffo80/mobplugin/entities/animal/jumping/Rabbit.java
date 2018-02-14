@@ -73,8 +73,8 @@ public class Rabbit extends WalkingAnimal {
         }
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int rabbitHide = Utils.rand(0, 2); // drops 0-1 rabit hide
-            int rawRabbit = Utils.rand(0, 2); // drops 0-1 raw rabit
+            int rabbitHide = Utils.rand(0, 2); // drops 0-1 rabbit hide
+            int rawRabbit = Utils.rand(0, 2); // drops 0-1 raw rabbit
             int rabbitfoot = Utils.rand(0, 101) <= 9 ? 1 : 0; //8.5%
             for (int i = 0; i < rabbitHide; i++) {
                 drops.add(Item.get(Item.RABBIT_HIDE, 0, 1));
