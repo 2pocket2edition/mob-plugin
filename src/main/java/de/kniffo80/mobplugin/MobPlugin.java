@@ -21,6 +21,7 @@ import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
+import cn.nukkit.event.level.ChunkPopulateEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMouseOverEntityEvent;
 import cn.nukkit.item.Item;
@@ -64,10 +65,38 @@ import java.util.List;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    public static boolean MOB_AI_ENABLED = false;
-
+    public static boolean MOB_AI_ENABLED = true;
+    //
+    // @EventHandler
+    // public void PlayerMouseRightEntityEvent(PlayerMouseRightEntityEvent ev) {
+    // }
+    private static Class<? extends Entity>[]
+            animals = new Class[]{
+            Rabbit.class,
+            Chicken.class,
+            Cow.class,
+            Horse.class,
+            Pig.class,
+            Sheep.class
+    },
+            monsters_ow = new Class[]{
+                    Creeper.class,
+                    Enderman.class,
+                    Skeleton.class,
+                    Skeleton.class,
+                    Zombie.class,
+                    Zombie.class,
+                    ZombieVillager.class
+            },
+            monsters_nether = new Class[]{
+                    Blaze.class,
+                    Ghast.class,
+                    PigZombie.class
+            },
+            monsters_end = new Class[]{
+                    Enderman.class
+            };
     private int counter = 0;
-
     private Config pluginConfig = null;
 
     /**
@@ -80,9 +109,6 @@ public class MobPlugin extends PluginBase implements Listener {
         FullChunk chunk = source.getLevel().getChunk((int) source.x >> 4, (int) source.z >> 4, true);
         if (!chunk.isGenerated()) {
             chunk.setGenerated();
-        }
-        if (!chunk.isPopulated()) {
-            chunk.setPopulated();
         }
 
         CompoundTag nbt = new CompoundTag().putList(new ListTag<DoubleTag>("Pos").add(new DoubleTag("", source.x)).add(new DoubleTag("", source.y)).add(new DoubleTag("", source.z)))
@@ -105,14 +131,14 @@ public class MobPlugin extends PluginBase implements Listener {
         pluginConfig = getConfig();
 
         // we need this flag as it's controlled by the plugin's entities
-        MOB_AI_ENABLED = pluginConfig.getBoolean("entities.mob-ai", false);
+        MOB_AI_ENABLED = pluginConfig.getBoolean("entities.mob-ai", true);
         int spawnDelay = pluginConfig.getInt("entities.auto-spawn-tick", 0);
 
         // register as listener to plugin events
         this.getServer().getPluginManager().registerEvents(this, this);
 
         if (spawnDelay > 0) {
-            this.getServer().getScheduler().scheduleRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, true);
+            this.getServer().getScheduler().scheduleRepeatingTask(this, new AutoSpawnTask(), spawnDelay, true);
         }
 
         Utils.logServerInfo(String.format("Plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
@@ -271,11 +297,13 @@ public class MobPlugin extends PluginBase implements Listener {
         return playerList;
     }
 
+    // --- event listeners ---
+
     /**
      * checks if a given player name's player instance is already in the given
      * list
      *
-     * @param name the name of the player to be checked
+     * @param name       the name of the player to be checked
      * @param playerList the existing entries
      * @return <code>true</code> if the player is already in the list
      */
@@ -287,8 +315,6 @@ public class MobPlugin extends PluginBase implements Listener {
         }
         return false;
     }
-
-    // --- event listeners ---
 
     /**
      * This event is called when an entity dies. We need this for experience
@@ -429,8 +455,50 @@ public class MobPlugin extends PluginBase implements Listener {
             counter++;
         }
     }
-    //
-    // @EventHandler
-    // public void PlayerMouseRightEntityEvent(PlayerMouseRightEntityEvent ev) {
-    // }
+
+    @EventHandler
+    public void handleChunkPopulate(ChunkPopulateEvent event) {
+        if (EnumDimension.getFromWorld(event.getLevel()) == EnumDimension.OVERWORLD && Utils.rand(0, 5) == 2) {
+            //spawn random pack of animals
+            Class<? extends Entity> entity = animals[Utils.rand(0, animals.length)];
+            FullChunk chunk = event.getChunk();
+            int count = Utils.rand(3, 6);
+            for (int i = 0; i < count; i++) {
+                int xPos = (chunk.getX() << 4) | Utils.rand(0, 15);
+                int zPos = (chunk.getZ() << 4) | Utils.rand(0, 15);
+                int yPos = chunk.getHighestBlockAt(xPos & 0xF, zPos & 0xF);
+                Entity entityObj = create(entity.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
+                event.getLevel().addEntity(entityObj);
+            }
+        }
+    }
+
+    public static void spawnMobs()  {
+        Server server = Server.getInstance();
+        for (Player player : server.getOnlinePlayers().values()) {
+            Class<? extends Entity>[] arr = null;
+            Level level = player.getLevel();
+            switch (EnumDimension.getFromWorld(level))  {
+                case OVERWORLD:
+                    arr = monsters_ow;
+                    break;
+                case NETHER:
+                    arr = monsters_nether;
+                    break;
+                case THE_END:
+                    arr = monsters_end;
+            }
+            Class<? extends Entity> clazz = arr[Utils.rand(0, arr.length)];
+            int count = Math.max(1, Utils.rand(-3, 2));
+            int xBase = Utils.rand(-32, 32) + player.getFloorX();
+            int zBase = Utils.rand(-32, 32) + player.getFloorZ();
+            for (int i = 0; i < count; i++) {
+                int xPos = Utils.rand(-5, 5) + xBase;
+                int zPos = Utils.rand(-5, 5) + zBase;
+                int yPos = level.getHighestBlockAt(xPos, zPos);
+                Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
+                level.addEntity(entity);
+            }
+        }
+    }
 }
