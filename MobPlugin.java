@@ -163,14 +163,14 @@ public class MobPlugin extends PluginBase implements Listener {
                         for (; y > 2; y--) {
                             if (chunk2.getBlockId(relX, y + 1, relZ) == Block.AIR
                                     && chunk2.getBlockId(relX, y, relZ) == Block.AIR
-                                    && !RandomSpawn.isUnafe(chunk2.getBlockId(relX, y - 1, relZ))) {
+                                    && chunk2.getBlockId(relX, y - 1, relZ) != Block.STILL_LAVA) {
                                 yPos = y;
                                 break DUMMY_BLOCK;
                             }
                         }
                         continue;
                     }
-                    Entity entityObj = create(PigZombie.class.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
+                    Entity entityObj = create("PigZombie", new Position(xPos, yPos, zPos, event.getLevel()));
                     event.getLevel().addEntity(entityObj);
                 }
                 break;
