@@ -36,8 +36,8 @@ import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.utils.Config;
 import cn.nukkit.utils.DyeColor;
+import net.daporkchop.mcpe.RandomSpawn;
 import net.twoptwoe.mobplugin.entities.BaseEntity;
 import net.twoptwoe.mobplugin.entities.animal.flying.Bat;
 import net.twoptwoe.mobplugin.entities.animal.flying.Parrot;
@@ -75,7 +75,15 @@ public class MobPlugin extends PluginBase implements Listener {
             Rabbit.class,
             Chicken.class,
             Cow.class,
+            Chicken.class,
+            Cow.class,
+            Chicken.class,
+            Cow.class,
             Horse.class,
+            Pig.class,
+            Sheep.class,
+            Pig.class,
+            Sheep.class,
             Pig.class,
             Sheep.class
     },
@@ -116,6 +124,109 @@ public class MobPlugin extends PluginBase implements Listener {
                         .add(new FloatTag("", source instanceof Location ? (float) ((Location) source).pitch : 0)));
 
         return Entity.createEntity(type.toString(), chunk, nbt, args);
+    }
+
+    public static void ChunkPopulateEvent(ChunkPopulateEvent event) {
+        if (Utils.rand(0, 12) != 2) {
+            return;
+        }
+
+        switch (EnumDimension.getFromWorld(event.getLevel())) {
+            case OVERWORLD:
+                //spawn random pack of animals
+                Class<? extends Entity> entity = animals[Utils.rand(0, animals.length)];
+                FullChunk chunk = event.getChunk();
+                int count = Utils.rand(3, 6);
+                for (int i = 0; i < count; i++) {
+                    int xPos = (chunk.getX() << 4) | Utils.rand(0, 15);
+                    int zPos = (chunk.getZ() << 4) | Utils.rand(0, 15);
+                    int yPos = chunk.getHighestBlockAt(xPos & 0xF, zPos & 0xF);
+                    if (yPos <= 64) {
+                        return;
+                    }
+                    Entity entityObj = create(entity.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
+                    event.getLevel().addEntity(entityObj);
+                }
+                break;
+            case NETHER:
+                FullChunk chunk2 = event.getChunk();
+                int count2 = Utils.rand(3, 6);
+                for (int i = 0; i < count2; i++) {
+                    int xPos = (chunk2.getX() << 4) | Utils.rand(0, 15);
+                    int zPos = (chunk2.getZ() << 4) | Utils.rand(0, 15);
+                    int yPos;
+                    DUMMY_BLOCK:
+                    {
+                        int y = 126;
+                        int relX = xPos & 0xF;
+                        int relZ = zPos & 0xF;
+                        for (; y > 2; y--) {
+                            if (chunk2.getBlockId(relX, y + 1, relZ) == Block.AIR
+                                    && chunk2.getBlockId(relX, y, relZ) == Block.AIR
+                                    && !RandomSpawn.isUnafe(chunk2.getBlockId(relX, y - 1, relZ))) {
+                                yPos = y;
+                                break DUMMY_BLOCK;
+                            }
+                        }
+                        continue;
+                    }
+                    Entity entityObj = create(PigZombie.class.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
+                    event.getLevel().addEntity(entityObj);
+                }
+                break;
+        }
+    }
+
+    public static void spawnMobs() {
+        Server server = Server.getInstance();
+        for (Player player : server.getOnlinePlayers().values()) {
+            Class<? extends Entity>[] arr = null;
+            Level level = player.getLevel();
+            EnumDimension dimension = EnumDimension.getFromWorld(level);
+            switch (dimension) {
+                case OVERWORLD:
+                    int time = level.getTime() % Level.TIME_FULL;
+                    if (time > 13184 && time < 22800) {
+                        continue;
+                    }
+                    arr = monsters_ow;
+                    break;
+                case NETHER:
+                    arr = monsters_nether;
+                    break;
+                case THE_END:
+                    arr = monsters_end;
+            }
+            Class<? extends Entity> clazz = arr[Utils.rand(0, arr.length)];
+            int count = Math.max(1, Utils.rand(-3, 2));
+            int xBase = Utils.rand(-32, 32) + player.getFloorX();
+            int zBase = Utils.rand(-32, 32) + player.getFloorZ();
+            for (int i = 0; i < count; i++) {
+                int xPos = Utils.rand(-5, 5) + xBase;
+                int zPos = Utils.rand(-5, 5) + zBase;
+                int yPos;
+                NETHER_Y:
+                if (dimension == EnumDimension.NETHER) {
+                    int y = 126;
+                    FullChunk chunk = level.getChunk(xPos >> 4, zPos >> 4);
+                    int relX = xPos & 0xF;
+                    int relZ = zPos & 0xF;
+                    for (; y > 2; y--) {
+                        if (chunk.getBlockId(relX, y + 1, relZ) == Block.AIR
+                                && chunk.getBlockId(relX, y, relZ) == Block.AIR
+                                && !RandomSpawn.isUnafe(chunk.getBlockId(relX, y - 1, relZ))) {
+                            yPos = y;
+                            break NETHER_Y;
+                        }
+                    }
+                    continue;
+                } else {
+                    yPos = level.getHighestBlockAt(xPos, zPos);
+                }
+                Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
+                level.addEntity(entity);
+            }
+        }
     }
 
     @Override
@@ -206,6 +317,8 @@ public class MobPlugin extends PluginBase implements Listener {
         return true;
     }
 
+    // --- event listeners ---
+
     private void registerEntities() {
         // register living entities
         Entity.registerEntity(Bat.class.getSimpleName(), Bat.class);
@@ -274,8 +387,6 @@ public class MobPlugin extends PluginBase implements Listener {
         }
         return playerList;
     }
-
-    // --- event listeners ---
 
     /**
      * checks if a given player name's player instance is already in the given
@@ -431,54 +542,6 @@ public class MobPlugin extends PluginBase implements Listener {
             }
         } else {
             counter++;
-        }
-    }
-
-    public static void ChunkPopulateEvent(ChunkPopulateEvent event) {
-        if (EnumDimension.getFromWorld(event.getLevel()) == EnumDimension.OVERWORLD && Utils.rand(0, 12) == 2) {
-            //spawn random pack of animals
-            Class<? extends Entity> entity = animals[Utils.rand(0, animals.length)];
-            FullChunk chunk = event.getChunk();
-            int count = Utils.rand(3, 6);
-            for (int i = 0; i < count; i++) {
-                int xPos = (chunk.getX() << 4) | Utils.rand(0, 15);
-                int zPos = (chunk.getZ() << 4) | Utils.rand(0, 15);
-                int yPos = chunk.getHighestBlockAt(xPos & 0xF, zPos & 0xF);
-                if (yPos <= 64) {
-                    return;
-                }
-                Entity entityObj = create(entity.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
-                event.getLevel().addEntity(entityObj);
-            }
-        }
-    }
-
-    public static void spawnMobs()  {
-        Server server = Server.getInstance();
-        for (Player player : server.getOnlinePlayers().values()) {
-            Class<? extends Entity>[] arr = null;
-            Level level = player.getLevel();
-            switch (EnumDimension.getFromWorld(level))  {
-                case OVERWORLD:
-                    arr = monsters_ow;
-                    break;
-                case NETHER:
-                    arr = monsters_nether;
-                    break;
-                case THE_END:
-                    arr = monsters_end;
-            }
-            Class<? extends Entity> clazz = arr[Utils.rand(0, arr.length)];
-            int count = Math.max(1, Utils.rand(-3, 2));
-            int xBase = Utils.rand(-32, 32) + player.getFloorX();
-            int zBase = Utils.rand(-32, 32) + player.getFloorZ();
-            for (int i = 0; i < count; i++) {
-                int xPos = Utils.rand(-5, 5) + xBase;
-                int zPos = Utils.rand(-5, 5) + zBase;
-                int yPos = level.getHighestBlockAt(xPos, zPos);
-                Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
-                level.addEntity(entity);
-            }
         }
     }
 }
