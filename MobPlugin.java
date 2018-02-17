@@ -163,7 +163,7 @@ public class MobPlugin extends PluginBase implements Listener {
                         for (; y > 2; y--) {
                             if (chunk2.getBlockId(relX, y + 1, relZ) == Block.AIR
                                     && chunk2.getBlockId(relX, y, relZ) == Block.AIR
-                                    && chunk2.getBlockId(relX, y - 1, relZ) != Block.STILL_LAVA) {
+                                    && !RandomSpawn.isUnafe(chunk2.getBlockId(relX, y - 1, relZ))) {
                                 yPos = y;
                                 break DUMMY_BLOCK;
                             }
