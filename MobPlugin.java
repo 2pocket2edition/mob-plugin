@@ -186,7 +186,7 @@ public class MobPlugin extends PluginBase implements Listener {
             switch (dimension) {
                 case OVERWORLD:
                     int time = level.getTime() % Level.TIME_FULL;
-                    if (time > 13184 && time < 22800) {
+                    if (!(time > 13184 && time < 22800)) {
                         continue;
                     }
                     arr = monsters_ow;
