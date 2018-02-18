@@ -140,8 +140,8 @@ public abstract class WalkingEntity extends BaseEntity {
                     this.motionX = 0;
                     this.motionZ = 0;
                 } else {
-                    this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
+                    this.motionX = this.getSpeed() * 0.1 * (x / diff);
+                    this.motionZ = this.getSpeed() * 0.1 * (z / diff);
                 }
                 this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
                 this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
