@@ -189,7 +189,7 @@ public class MobPlugin extends PluginBase implements Listener {
                     }
                 }
 
-                level.getChunks().forEach((chunkHash, chunk) -> {
+                level.getChunks().forEachValue(chunk -> {
                     CHUNK:
                     if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
                         Class<? extends Entity>[] arr = null;
@@ -231,6 +231,8 @@ public class MobPlugin extends PluginBase implements Listener {
                         Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
                         level.addEntity(entity);
                     }
+
+                    return true;
                 });
             }
         });
