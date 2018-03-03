@@ -179,54 +179,61 @@ public class MobPlugin extends PluginBase implements Listener {
 
     public static void spawnMobs() {
         Server server = Server.getInstance();
-        for (Player player : server.getOnlinePlayers().values()) {
-            Class<? extends Entity>[] arr = null;
-            Level level = player.getLevel();
-            EnumDimension dimension = EnumDimension.getFromWorld(level);
-            switch (dimension) {
-                case OVERWORLD:
+        server.getLevels().forEach((levelId, level) -> {
+            LEVEL:
+            {
+                if (level == server.getDefaultLevel()) {
                     int time = level.getTime() % Level.TIME_FULL;
                     if (!(time > 13184 && time < 22800)) {
-                        continue;
+                        break LEVEL;
                     }
-                    arr = monsters_ow;
-                    break;
-                case NETHER:
-                    arr = monsters_nether;
-                    break;
-                case THE_END:
-                    arr = monsters_end;
-            }
-            Class<? extends Entity> clazz = arr[Utils.rand(0, arr.length)];
-            int count = Math.max(1, Utils.rand(-3, 2));
-            int xBase = Utils.rand(-32, 32) + player.getFloorX();
-            int zBase = Utils.rand(-32, 32) + player.getFloorZ();
-            for (int i = 0; i < count; i++) {
-                int xPos = Utils.rand(-5, 5) + xBase;
-                int zPos = Utils.rand(-5, 5) + zBase;
-                int yPos;
-                NETHER_Y:
-                if (dimension == EnumDimension.NETHER) {
-                    int y = 126;
-                    FullChunk chunk = level.getChunk(xPos >> 4, zPos >> 4);
-                    int relX = xPos & 0xF;
-                    int relZ = zPos & 0xF;
-                    for (; y > 2; y--) {
-                        if (chunk.getBlockId(relX, y + 1, relZ) == Block.AIR
-                                && chunk.getBlockId(relX, y, relZ) == Block.AIR
-                                && !RandomSpawn.isUnafe(chunk.getBlockId(relX, y - 1, relZ))) {
-                            yPos = y;
-                            break NETHER_Y;
-                        }
-                    }
-                    continue;
-                } else {
-                    yPos = level.getHighestBlockAt(xPos, zPos);
                 }
-                Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
-                level.addEntity(entity);
+
+                level.getChunks().forEach((chunkHash, chunk) -> {
+                    CHUNK:
+                    if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
+                        Class<? extends Entity>[] arr = null;
+                        EnumDimension dimension = EnumDimension.getFromWorld(level);
+                        switch (dimension) {
+                            case OVERWORLD:
+                                arr = monsters_ow;
+                                break;
+                            case NETHER:
+                                arr = monsters_nether;
+                                break;
+                            case THE_END:
+                                arr = monsters_end;
+                        }
+                        Class<? extends Entity> clazz = arr[Utils.rand(0, arr.length)];
+                        int xPos = Utils.rand(0, 15) | (chunk.getX() << 4);
+                        int zPos = Utils.rand(0, 15) | (chunk.getZ() << 4);
+                        int yPos;
+                        NETHER_Y:
+                        if (dimension == EnumDimension.NETHER) {
+                            int y = 126;
+                            int relX = xPos & 0xF;
+                            int relZ = zPos & 0xF;
+                            for (; y > 2; y--) {
+                                if (chunk.getBlockId(relX, y + 1, relZ) == Block.AIR
+                                        && chunk.getBlockId(relX, y, relZ) == Block.AIR
+                                        && !RandomSpawn.isUnafe(chunk.getBlockId(relX, y - 1, relZ))) {
+                                    yPos = y;
+                                    break NETHER_Y;
+                                }
+                            }
+                            break CHUNK;
+                        } else {
+                            yPos = level.getHighestBlockAt(xPos, zPos);
+                            if (RandomSpawn.isUnafe(chunk.getBlockId(xPos & 0xF, yPos, zPos & 0xF)))    {
+                                break CHUNK;
+                            }
+                        }
+                        Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
+                        level.addEntity(entity);
+                    }
+                });
             }
-        }
+        });
     }
 
     @Override
