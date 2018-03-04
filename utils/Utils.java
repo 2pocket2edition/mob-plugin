@@ -12,7 +12,6 @@ import java.util.Random;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz (kniffo80)</a>
- *
  */
 public class Utils {
 
@@ -39,6 +38,7 @@ public class Utils {
 
     /**
      * Returns random boolean
+     *
      * @return a boolean random value either <code>true</code> or <code>false</code>
      */
     public static boolean rand() {

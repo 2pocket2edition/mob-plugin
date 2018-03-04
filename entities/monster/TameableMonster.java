@@ -64,6 +64,7 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
 
     /**
      * Sets the owner of the tameable {@link Entity}
+     *
      * @param player the player that is the owner
      */
     public void setOwner(Player player) {

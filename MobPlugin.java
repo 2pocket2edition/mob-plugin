@@ -37,6 +37,8 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.DyeColor;
+import gnu.trove.map.TIntFloatMap;
+import gnu.trove.map.hash.TIntFloatHashMap;
 import net.daporkchop.mcpe.RandomSpawn;
 import net.twoptwoe.mobplugin.entities.BaseEntity;
 import net.twoptwoe.mobplugin.entities.animal.flying.Bat;
@@ -65,11 +67,32 @@ import java.util.List;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
+    @SuppressWarnings("serial")
+    public static final TIntFloatMap armorValues = new TIntFloatHashMap() {
+        {
+            put(Item.LEATHER_CAP, 1f);
+            put(Item.LEATHER_TUNIC, 3f);
+            put(Item.LEATHER_PANTS, 2f);
+            put(Item.LEATHER_BOOTS, 1f);
+            put(Item.CHAIN_HELMET, 1f);
+            put(Item.CHAIN_CHESTPLATE, 5f);
+            put(Item.CHAIN_LEGGINGS, 4f);
+            put(Item.CHAIN_BOOTS, 1f);
+            put(Item.GOLD_HELMET, 1f);
+            put(Item.GOLD_CHESTPLATE, 5f);
+            put(Item.GOLD_LEGGINGS, 3f);
+            put(Item.GOLD_BOOTS, 1f);
+            put(Item.IRON_HELMET, 2f);
+            put(Item.IRON_CHESTPLATE, 6f);
+            put(Item.IRON_LEGGINGS, 5f);
+            put(Item.IRON_BOOTS, 2f);
+            put(Item.DIAMOND_HELMET, 3f);
+            put(Item.DIAMOND_CHESTPLATE, 8f);
+            put(Item.DIAMOND_LEGGINGS, 6f);
+            put(Item.DIAMOND_BOOTS, 3f);
+        }
+    };
     public static boolean MOB_AI_ENABLED = true;
-    //
-    // @EventHandler
-    // public void PlayerMouseRightEntityEvent(PlayerMouseRightEntityEvent ev) {
-    // }
     private static Class<? extends Entity>[]
             animals = new Class[]{
             Rabbit.class,
@@ -189,7 +212,7 @@ public class MobPlugin extends PluginBase implements Listener {
                     }
                 }
 
-                level.getChunks().forEachValue(chunk -> {
+                level.getChunks().forEach((chunkHash, chunk) -> {
                     CHUNK:
                     if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
                         Class<? extends Entity>[] arr = null;
@@ -224,15 +247,13 @@ public class MobPlugin extends PluginBase implements Listener {
                             break CHUNK;
                         } else {
                             yPos = level.getHighestBlockAt(xPos, zPos);
-                            if (RandomSpawn.isUnafe(chunk.getBlockId(xPos & 0xF, yPos, zPos & 0xF)))    {
+                            if (RandomSpawn.isUnafe(chunk.getBlockId(xPos & 0xF, yPos, zPos & 0xF))) {
                                 break CHUNK;
                             }
                         }
                         Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
                         level.addEntity(entity);
                     }
-
-                    return true;
                 });
             }
         });

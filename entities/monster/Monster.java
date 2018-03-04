@@ -8,11 +8,15 @@ public interface Monster {
 
     int getDamage();
 
+    void setDamage(int damage);
+
     void setDamage(int[] damage);
 
     int getDamage(Integer difficulty);
 
     int getMinDamage();
+
+    void setMinDamage(int damage);
 
     void setMinDamage(int[] damage);
 
@@ -20,19 +24,15 @@ public interface Monster {
 
     int getMaxDamage();
 
+    void setMaxDamage(int damage);
+
     void setMaxDamage(int[] damage);
 
     int getMaxDamage(Integer difficulty);
 
-    void setDamage(int damage);
-
     void setDamage(int damage, int difficulty);
 
-    void setMinDamage(int damage);
-
     void setMinDamage(int damage, int difficulty);
-
-    void setMaxDamage(int damage);
 
     void setMaxDamage(int damage, int difficulty);
 

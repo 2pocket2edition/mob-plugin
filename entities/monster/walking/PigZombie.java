@@ -10,6 +10,7 @@ import cn.nukkit.item.ItemSwordGold;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
+import net.twoptwoe.mobplugin.MobPlugin;
 import net.twoptwoe.mobplugin.entities.monster.WalkingMonster;
 import net.twoptwoe.mobplugin.utils.Utils;
 
@@ -87,36 +88,9 @@ public class PigZombie extends WalkingMonster {
             damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
 
             if (player instanceof Player) {
-                @SuppressWarnings("serial")
-                HashMap<Integer, Float> armorValues = new HashMap<Integer, Float>() {
-
-                    {
-                        put(Item.LEATHER_CAP, 1f);
-                        put(Item.LEATHER_TUNIC, 3f);
-                        put(Item.LEATHER_PANTS, 2f);
-                        put(Item.LEATHER_BOOTS, 1f);
-                        put(Item.CHAIN_HELMET, 1f);
-                        put(Item.CHAIN_CHESTPLATE, 5f);
-                        put(Item.CHAIN_LEGGINGS, 4f);
-                        put(Item.CHAIN_BOOTS, 1f);
-                        put(Item.GOLD_HELMET, 1f);
-                        put(Item.GOLD_CHESTPLATE, 5f);
-                        put(Item.GOLD_LEGGINGS, 3f);
-                        put(Item.GOLD_BOOTS, 1f);
-                        put(Item.IRON_HELMET, 2f);
-                        put(Item.IRON_CHESTPLATE, 6f);
-                        put(Item.IRON_LEGGINGS, 5f);
-                        put(Item.IRON_BOOTS, 2f);
-                        put(Item.DIAMOND_HELMET, 3f);
-                        put(Item.DIAMOND_CHESTPLATE, 8f);
-                        put(Item.DIAMOND_LEGGINGS, 6f);
-                        put(Item.DIAMOND_BOOTS, 3f);
-                    }
-                };
-
                 float points = 0;
                 for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    points += MobPlugin.armorValues.get(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,

@@ -5,8 +5,11 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Position;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import net.daporkchop.mcpe.RandomSpawn;
+import net.twoptwoe.mobplugin.MobPlugin;
 import net.twoptwoe.mobplugin.entities.monster.WalkingMonster;
 import net.twoptwoe.mobplugin.utils.Utils;
 
@@ -52,40 +55,16 @@ public class Enderman extends WalkingMonster {
     public void attackEntity(Entity player) {
         if (this.attackDelay > 10 && this.distanceSquared(player) < 1) {
             this.attackDelay = 0;
+
+            teleport(1, player.clone().add(0, 1000, 0));
+
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
             damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
 
             if (player instanceof Player) {
-                @SuppressWarnings("serial")
-                HashMap<Integer, Float> armorValues = new HashMap<Integer, Float>() {
-
-                    {
-                        put(Item.LEATHER_CAP, 1f);
-                        put(Item.LEATHER_TUNIC, 3f);
-                        put(Item.LEATHER_PANTS, 2f);
-                        put(Item.LEATHER_BOOTS, 1f);
-                        put(Item.CHAIN_HELMET, 1f);
-                        put(Item.CHAIN_CHESTPLATE, 5f);
-                        put(Item.CHAIN_LEGGINGS, 4f);
-                        put(Item.CHAIN_BOOTS, 1f);
-                        put(Item.GOLD_HELMET, 1f);
-                        put(Item.GOLD_CHESTPLATE, 5f);
-                        put(Item.GOLD_LEGGINGS, 3f);
-                        put(Item.GOLD_BOOTS, 1f);
-                        put(Item.IRON_HELMET, 2f);
-                        put(Item.IRON_CHESTPLATE, 6f);
-                        put(Item.IRON_LEGGINGS, 5f);
-                        put(Item.IRON_BOOTS, 2f);
-                        put(Item.DIAMOND_HELMET, 3f);
-                        put(Item.DIAMOND_CHESTPLATE, 8f);
-                        put(Item.DIAMOND_LEGGINGS, 6f);
-                        put(Item.DIAMOND_BOOTS, 3f);
-                    }
-                };
-
                 float points = 0;
                 for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    points += MobPlugin.armorValues.get(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
@@ -112,4 +91,28 @@ public class Enderman extends WalkingMonster {
         return 5; // gain 5 experience
     }
 
+    @Override
+    public boolean attack(EntityDamageEvent source) {
+        boolean success = super.attack(source);
+        teleport(20, this.clone().add(0, 1000, 0));
+        return success;
+    }
+
+    public boolean teleport(int radius, Position ok) {
+        Position pos = RandomSpawn.getSpawnPos(level, ok, radius, 256);
+        if (pos.y > 1000) {
+            return false;
+        }
+        this.teleport(pos);
+        return true;
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (Utils.rand(0, 700) == 0) {
+            teleport(20, this.clone().add(0, 1000, 0));
+        }
+
+        return super.entityBaseTick(tickDiff);
+    }
 }

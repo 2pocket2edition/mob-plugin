@@ -41,6 +41,10 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         return getDamage(null);
     }
 
+    public void setDamage(int damage) {
+        this.setDamage(damage, Server.getInstance().getDifficulty());
+    }
+
     public void setDamage(int[] damage) {
         if (damage.length < 4) {
             return;
@@ -68,6 +72,16 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         return getMinDamage(null);
     }
 
+    public void setMinDamage(int[] damage) {
+        if (damage.length < 4) {
+            return;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            this.setMinDamage(Math.min(damage[i], this.getMaxDamage(i)), i);
+        }
+    }
+
     public void setMinDamage(int damage) {
         this.setMinDamage(damage, Server.getInstance().getDifficulty());
     }
@@ -83,6 +97,15 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         return getMaxDamage(null);
     }
 
+    public void setMaxDamage(int[] damage) {
+        if (damage.length < 4)
+            return;
+
+        for (int i = 0; i < 4; i++) {
+            this.setMaxDamage(Math.max(damage[i], this.getMinDamage(i)), i);
+        }
+    }
+
     public void setMaxDamage(int damage) {
         setMinDamage(damage, Server.getInstance().getDifficulty());
     }
@@ -94,10 +117,6 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         return this.maxDamage[difficulty];
     }
 
-    public void setDamage(int damage) {
-        this.setDamage(damage, Server.getInstance().getDifficulty());
-    }
-
     public void setDamage(int damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
             this.minDamage[difficulty] = damage;
@@ -105,28 +124,9 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         }
     }
 
-    public void setMinDamage(int[] damage) {
-        if (damage.length < 4) {
-            return;
-        }
-
-        for (int i = 0; i < 4; i++) {
-            this.setMinDamage(Math.min(damage[i], this.getMaxDamage(i)), i);
-        }
-    }
-
     public void setMinDamage(int damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
             this.minDamage[difficulty] = Math.min(damage, this.getMaxDamage(difficulty));
-        }
-    }
-
-    public void setMaxDamage(int[] damage) {
-        if (damage.length < 4)
-            return;
-
-        for (int i = 0; i < 4; i++) {
-            this.setMaxDamage(Math.max(damage[i], this.getMinDamage(i)), i);
         }
     }
 
@@ -182,7 +182,6 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         if (this instanceof Enderman) {
             if (this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z))) instanceof BlockWater) {
                 this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
-                this.move(Utils.rand(-20, 20), Utils.rand(-20, 20), Utils.rand(-20, 20));
             }
         } else {
             if (!this.hasEffect(Effect.WATER_BREATHING) && this.isInsideOfWater()) {
