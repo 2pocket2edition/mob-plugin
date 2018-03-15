@@ -117,11 +117,18 @@ public class MobPlugin extends PluginBase implements Listener {
                     Skeleton.class,
                     Zombie.class,
                     Zombie.class,
-                    ZombieVillager.class
+                    ZombieVillager.class,
+                    Spider.class,
+                    Spider.class
             },
             monsters_nether = new Class[]{
                     Blaze.class,
                     Ghast.class,
+                    PigZombie.class,
+                    PigZombie.class,
+                    PigZombie.class,
+                    PigZombie.class,
+                    PigZombie.class,
                     PigZombie.class
             },
             monsters_end = new Class[]{
