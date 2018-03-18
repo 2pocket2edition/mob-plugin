@@ -60,6 +60,7 @@ import net.twoptwoe.mobplugin.entities.projectile.EntityFireBall;
 import net.twoptwoe.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -207,34 +208,37 @@ public class MobPlugin extends PluginBase implements Listener {
         }
     }
 
+    private static ThreadLocal<HashSet<FullChunk>> spawnChunks = ThreadLocal.withInitial(HashSet::new);
+
     public static void spawnMobs() {
         Server server = Server.getInstance();
-        server.getLevels().forEach((levelId, level) -> {
+        HashSet<FullChunk> chunks = spawnChunks.get();
+        server.getLevels().values().forEach(level -> {
             LEVEL:
             {
-                if (level == server.getDefaultLevel()) {
-                    int time = level.getTime() % Level.TIME_FULL;
-                    if (!(time > 13184 && time < 22800)) {
-                        break LEVEL;
-                    }
+                Class<? extends Entity>[] arr = null;
+                EnumDimension dimension = EnumDimension.getFromWorld(level);
+                switch (dimension) {
+                    case OVERWORLD:
+                        int time = level.getTime() % Level.TIME_FULL;
+                        if (!(time > 13184 && time < 22800)) {
+                            break LEVEL;
+                        }
+                        arr = monsters_ow;
+                        break;
+                    case NETHER:
+                        arr = monsters_nether;
+                        break;
+                    case THE_END:
+                        arr = monsters_end;
                 }
+                final Class<? extends Entity>[] a = arr;
 
-                level.getChunks().forEach((chunkHash, chunk) -> {
+                chunks.addAll(level.getChunks().values());
+                chunks.forEach(chunk -> {
                     CHUNK:
                     if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
-                        Class<? extends Entity>[] arr = null;
-                        EnumDimension dimension = EnumDimension.getFromWorld(level);
-                        switch (dimension) {
-                            case OVERWORLD:
-                                arr = monsters_ow;
-                                break;
-                            case NETHER:
-                                arr = monsters_nether;
-                                break;
-                            case THE_END:
-                                arr = monsters_end;
-                        }
-                        Class<? extends Entity> clazz = arr[Utils.rand(0, arr.length)];
+                        Class<? extends Entity> clazz = a[Utils.rand(0, a.length)];
                         int xPos = Utils.rand(0, 15) | (chunk.getX() << 4);
                         int zPos = Utils.rand(0, 15) | (chunk.getZ() << 4);
                         int yPos;
@@ -262,6 +266,7 @@ public class MobPlugin extends PluginBase implements Listener {
                         level.addEntity(entity);
                     }
                 });
+                chunks.clear();
             }
         });
     }
