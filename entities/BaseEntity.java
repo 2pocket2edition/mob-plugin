@@ -384,7 +384,7 @@ public abstract class BaseEntity extends EntityCreature {
             double movY = dy;
             double movZ = dz * moveMultifier;
 
-            AxisAlignedBB[] list = this.level.getCollisionCubes(this, this.level.getTickRate() > 1 ? this.boundingBox.getOffsetBoundingBox(dx, dy, dz) : this.boundingBox.addCoord(dx, dy, dz));
+            AxisAlignedBB[] list = this.level.getCollisionCubes(this, this.boundingBox.getOffsetBoundingBox(dx, dy, dz));
             if (this.isWallCheck()) {
                 for (AxisAlignedBB bb : list) {
                     dx = bb.calculateXOffset(this.boundingBox, dx);

@@ -234,7 +234,7 @@ public class MobPlugin extends PluginBase implements Listener {
                 }
                 final Class<? extends Entity>[] a = arr;
 
-                chunks.addAll(level.getChunks().values());
+                level.getChunks().values().forEach(chunks::add);
                 chunks.forEach(chunk -> {
                     CHUNK:
                     if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
