@@ -45,7 +45,20 @@ import net.twoptwoe.mobplugin.entities.animal.flying.Bat;
 import net.twoptwoe.mobplugin.entities.animal.flying.Parrot;
 import net.twoptwoe.mobplugin.entities.animal.jumping.Rabbit;
 import net.twoptwoe.mobplugin.entities.animal.swimming.Squid;
-import net.twoptwoe.mobplugin.entities.animal.walking.*;
+import net.twoptwoe.mobplugin.entities.animal.walking.Chicken;
+import net.twoptwoe.mobplugin.entities.animal.walking.Cow;
+import net.twoptwoe.mobplugin.entities.animal.walking.Donkey;
+import net.twoptwoe.mobplugin.entities.animal.walking.Horse;
+import net.twoptwoe.mobplugin.entities.animal.walking.Llama;
+import net.twoptwoe.mobplugin.entities.animal.walking.Mooshroom;
+import net.twoptwoe.mobplugin.entities.animal.walking.Mule;
+import net.twoptwoe.mobplugin.entities.animal.walking.Ocelot;
+import net.twoptwoe.mobplugin.entities.animal.walking.Pig;
+import net.twoptwoe.mobplugin.entities.animal.walking.PolarBear;
+import net.twoptwoe.mobplugin.entities.animal.walking.Sheep;
+import net.twoptwoe.mobplugin.entities.animal.walking.SkeletonHorse;
+import net.twoptwoe.mobplugin.entities.animal.walking.Villager;
+import net.twoptwoe.mobplugin.entities.animal.walking.ZombieHorse;
 import net.twoptwoe.mobplugin.entities.block.BlockEntitySpawner;
 import net.twoptwoe.mobplugin.entities.monster.flying.Blaze;
 import net.twoptwoe.mobplugin.entities.monster.flying.EnderDragon;
@@ -55,13 +68,32 @@ import net.twoptwoe.mobplugin.entities.monster.jumping.MagmaCube;
 import net.twoptwoe.mobplugin.entities.monster.jumping.Slime;
 import net.twoptwoe.mobplugin.entities.monster.swimming.ElderGuardian;
 import net.twoptwoe.mobplugin.entities.monster.swimming.Guardian;
-import net.twoptwoe.mobplugin.entities.monster.walking.*;
+import net.twoptwoe.mobplugin.entities.monster.walking.CaveSpider;
+import net.twoptwoe.mobplugin.entities.monster.walking.Creeper;
+import net.twoptwoe.mobplugin.entities.monster.walking.Enderman;
+import net.twoptwoe.mobplugin.entities.monster.walking.Endermite;
+import net.twoptwoe.mobplugin.entities.monster.walking.Husk;
+import net.twoptwoe.mobplugin.entities.monster.walking.IronGolem;
+import net.twoptwoe.mobplugin.entities.monster.walking.PigZombie;
+import net.twoptwoe.mobplugin.entities.monster.walking.Shulker;
+import net.twoptwoe.mobplugin.entities.monster.walking.Silverfish;
+import net.twoptwoe.mobplugin.entities.monster.walking.Skeleton;
+import net.twoptwoe.mobplugin.entities.monster.walking.SnowGolem;
+import net.twoptwoe.mobplugin.entities.monster.walking.Spider;
+import net.twoptwoe.mobplugin.entities.monster.walking.Stray;
+import net.twoptwoe.mobplugin.entities.monster.walking.Witch;
+import net.twoptwoe.mobplugin.entities.monster.walking.WitherSkeleton;
+import net.twoptwoe.mobplugin.entities.monster.walking.Wolf;
+import net.twoptwoe.mobplugin.entities.monster.walking.Zombie;
+import net.twoptwoe.mobplugin.entities.monster.walking.ZombieVillager;
 import net.twoptwoe.mobplugin.entities.projectile.EntityFireBall;
 import net.twoptwoe.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz (kniffo80)</a>
@@ -135,6 +167,7 @@ public class MobPlugin extends PluginBase implements Listener {
             monsters_end = new Class[]{
                     Enderman.class
             };
+    private static ThreadLocal<HashSet<FullChunk>> spawnChunks = ThreadLocal.withInitial(HashSet::new);
     private int counter = 0;
 
     /**
@@ -208,66 +241,69 @@ public class MobPlugin extends PluginBase implements Listener {
         }
     }
 
-    private static ThreadLocal<HashSet<FullChunk>> spawnChunks = ThreadLocal.withInitial(HashSet::new);
-
     public static void spawnMobs() {
         Server server = Server.getInstance();
         HashSet<FullChunk> chunks = spawnChunks.get();
         server.getLevels().values().forEach(level -> {
-            LEVEL:
-            {
-                Class<? extends Entity>[] arr = null;
-                EnumDimension dimension = EnumDimension.getFromWorld(level);
-                switch (dimension) {
-                    case OVERWORLD:
-                        int time = level.getTime() % Level.TIME_FULL;
-                        if (!(time > 13184 && time < 22800)) {
-                            break LEVEL;
-                        }
+            AtomicBoolean ow_day = new AtomicBoolean(false);
+            Class<? extends Entity>[] arr = null;
+            EnumDimension dimension = EnumDimension.getFromWorld(level);
+            switch (dimension) {
+                case OVERWORLD:
+                    int time = level.getTime() % Level.TIME_FULL;
+                    if (time > 13184 && time < 22800) {
                         arr = monsters_ow;
-                        break;
-                    case NETHER:
-                        arr = monsters_nether;
-                        break;
-                    case THE_END:
-                        arr = monsters_end;
-                }
-                final Class<? extends Entity>[] a = arr;
+                    } else {
+                        if (ThreadLocalRandom.current().nextInt(20) != 0)   {
+                            return;
+                        }
+                        ow_day.set(true);
+                        arr = animals;
+                    }
+                    break;
+                case NETHER:
+                    arr = monsters_nether;
+                    break;
+                case THE_END:
+                    arr = monsters_end;
+            }
+            final Class<? extends Entity>[] a = arr;
 
-                level.getChunks().values().forEach(chunks::add);
-                chunks.forEach(chunk -> {
-                    CHUNK:
-                    if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
-                        Class<? extends Entity> clazz = a[Utils.rand(0, a.length)];
-                        int xPos = Utils.rand(0, 15) | (chunk.getX() << 4);
-                        int zPos = Utils.rand(0, 15) | (chunk.getZ() << 4);
-                        int yPos;
-                        NETHER_Y:
-                        if (dimension == EnumDimension.NETHER) {
-                            int y = 126;
-                            int relX = xPos & 0xF;
-                            int relZ = zPos & 0xF;
-                            for (; y > 2; y--) {
-                                if (chunk.getBlockId(relX, y + 1, relZ) == Block.AIR
-                                        && chunk.getBlockId(relX, y, relZ) == Block.AIR
-                                        && !RandomSpawn.isUnafe(chunk.getBlockId(relX, y - 1, relZ))) {
-                                    yPos = y;
-                                    break NETHER_Y;
-                                }
-                            }
-                            break CHUNK;
-                        } else {
-                            yPos = level.getHighestBlockAt(xPos, zPos);
-                            if (RandomSpawn.isUnafe(chunk.getBlockId(xPos & 0xF, yPos, zPos & 0xF))) {
-                                break CHUNK;
+            chunks.addAll(level.getChunks().values());
+            chunks.forEach(chunk -> {
+                CHUNK:
+                if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
+                    Class<? extends Entity> clazz = a[Utils.rand(0, a.length)];
+                    int xPos = Utils.rand(0, 15) | (chunk.getX() << 4);
+                    int zPos = Utils.rand(0, 15) | (chunk.getZ() << 4);
+                    int yPos;
+                    NETHER_Y:
+                    if (dimension == EnumDimension.NETHER) {
+                        int y = 126;
+                        int relX = xPos & 0xF;
+                        int relZ = zPos & 0xF;
+                        for (; y > 2; y--) {
+                            if (chunk.getBlockId(relX, y + 1, relZ) == Block.AIR
+                                    && chunk.getBlockId(relX, y, relZ) == Block.AIR
+                                    && !RandomSpawn.isUnafe(chunk.getBlockId(relX, y - 1, relZ))) {
+                                yPos = y;
+                                break NETHER_Y;
                             }
                         }
-                        Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
-                        level.addEntity(entity);
+                        break CHUNK;
+                    } else {
+                        yPos = level.getHighestBlockAt(xPos, zPos);
+                        if (RandomSpawn.isUnafe(chunk.getBlockId(xPos & 0xF, yPos, zPos & 0xF))) {
+                            break CHUNK;
+                        } else if (ow_day.get() && chunk.getBlockId(xPos & 0xF, yPos - 1, zPos & 0xF) != Block.GRASS) {
+                            break CHUNK;
+                        }
                     }
-                });
-                chunks.clear();
-            }
+                    Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
+                    level.addEntity(entity);
+                }
+            });
+            chunks.clear();
         });
     }
 
