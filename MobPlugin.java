@@ -254,9 +254,6 @@ public class MobPlugin extends PluginBase implements Listener {
                     if (time > 13184 && time < 22800) {
                         arr = monsters_ow;
                     } else {
-                        if (ThreadLocalRandom.current().nextInt(20) != 0)   {
-                            return;
-                        }
                         ow_day.set(true);
                         arr = animals;
                     }
@@ -271,6 +268,9 @@ public class MobPlugin extends PluginBase implements Listener {
 
             chunks.addAll(level.getChunks().values());
             chunks.forEach(chunk -> {
+                if (ow_day.get() && ThreadLocalRandom.current().nextInt(20) != 0)   {
+                    return;
+                }
                 CHUNK:
                 if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
                     Class<? extends Entity> clazz = a[Utils.rand(0, a.length)];
@@ -295,9 +295,9 @@ public class MobPlugin extends PluginBase implements Listener {
                         yPos = level.getHighestBlockAt(xPos, zPos);
                         if (RandomSpawn.isUnafe(chunk.getBlockId(xPos & 0xF, yPos, zPos & 0xF))) {
                             break CHUNK;
-                        } else if (ow_day.get() && chunk.getBlockId(xPos & 0xF, yPos - 1, zPos & 0xF) != Block.GRASS) {
+                        }/* else if (ow_day.get() && chunk.getBlockId(xPos & 0xF, yPos - 1, zPos & 0xF) != Block.GRASS) {
                             break CHUNK;
-                        }
+                        }*/
                     }
                     Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
                     level.addEntity(entity);
