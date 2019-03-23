@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.data.IntEntityData;
+import cn.nukkit.entity.passive.EntityWolf;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 
 public class Wolf extends TameableMonster {
 
-    public static final int NETWORK_ID = 14;
+    public static final int NETWORK_ID = EntityWolf.NETWORK_ID;
 
     private static final String NBT_KEY_ANGRY = "Angry";
 

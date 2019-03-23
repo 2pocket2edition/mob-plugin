@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
+import cn.nukkit.entity.mob.EntityHusk;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.item.Item;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class Husk extends WalkingMonster implements EntityAgeable {
 
-    public static final int NETWORK_ID = 47;
+    public static final int NETWORK_ID = EntityHusk.NETWORK_ID;
 
     public Husk(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

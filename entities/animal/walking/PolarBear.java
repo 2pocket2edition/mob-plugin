@@ -1,6 +1,7 @@
 package net.twoptwoe.mobplugin.entities.animal.walking;
 
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.passive.EntityPolarBear;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -9,7 +10,7 @@ import net.twoptwoe.mobplugin.utils.Utils;
 
 public class PolarBear extends WalkingAnimal {
 
-    public static final int NETWORK_ID = 28;
+    public static final int NETWORK_ID = EntityPolarBear.NETWORK_ID;
 
     public PolarBear(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

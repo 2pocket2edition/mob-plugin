@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntityEndermite;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 
 public class Endermite extends WalkingMonster {
 
-    public static final int NETWORK_ID = 55;
+    public static final int NETWORK_ID = EntityEndermite.NETWORK_ID;
 
     public Endermite(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

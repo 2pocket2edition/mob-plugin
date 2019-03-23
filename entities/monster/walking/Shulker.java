@@ -1,13 +1,14 @@
 package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntityShulker;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import net.twoptwoe.mobplugin.entities.monster.WalkingMonster;
 
 public class Shulker extends WalkingMonster {
 
-    public static final int NETWORK_ID = 54;
+    public static final int NETWORK_ID = EntityShulker.NETWORK_ID;
 
     public Shulker(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

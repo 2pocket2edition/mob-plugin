@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntitySkeleton;
 import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class Skeleton extends WalkingMonster {
 
-    public static final int NETWORK_ID = 34;
+    public static final int NETWORK_ID = EntitySkeleton.NETWORK_ID;
 
     public Skeleton(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

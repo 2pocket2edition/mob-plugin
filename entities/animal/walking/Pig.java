@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityRideable;
+import cn.nukkit.entity.passive.EntityPig;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class Pig extends WalkingAnimal implements EntityRideable {
 
-    public static final int NETWORK_ID = 12;
+    public static final int NETWORK_ID = EntityPig.NETWORK_ID;
 
     public Pig(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

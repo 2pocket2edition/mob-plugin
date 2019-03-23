@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.swimming;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.mob.EntityElderGuardian;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class ElderGuardian extends WalkingMonster {
 
-    public static final int NETWORK_ID = 50;
+    public static final int NETWORK_ID = EntityElderGuardian.NETWORK_ID;
 
     public ElderGuardian(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

@@ -3,6 +3,7 @@ package net.twoptwoe.mobplugin.entities.animal.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.passive.EntityOcelot;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -11,7 +12,7 @@ import net.twoptwoe.mobplugin.utils.Utils;
 
 public class Ocelot extends WalkingAnimal {
 
-    public static final int NETWORK_ID = 22;
+    public static final int NETWORK_ID = EntityOcelot.NETWORK_ID;
 
     public Ocelot(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

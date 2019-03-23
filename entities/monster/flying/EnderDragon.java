@@ -1,6 +1,7 @@
 package net.twoptwoe.mobplugin.entities.monster.flying;
 
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntityEnderDragon;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -8,7 +9,7 @@ import net.twoptwoe.mobplugin.entities.monster.FlyingMonster;
 
 public class EnderDragon extends FlyingMonster {
 
-    public static final int NETWORK_ID = 53;
+    public static final int NETWORK_ID = EntityEnderDragon.NETWORK_ID;
 
     public EnderDragon(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

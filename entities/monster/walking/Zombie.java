@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
+import cn.nukkit.entity.mob.EntityZombie;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class Zombie extends WalkingMonster implements EntityAgeable {
 
-    public static final int NETWORK_ID = 32;
+    public static final int NETWORK_ID = EntityZombie.NETWORK_ID;
 
     public Zombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

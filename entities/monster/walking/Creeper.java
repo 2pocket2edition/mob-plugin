@@ -3,6 +3,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.entity.data.ByteEntityData;
+import cn.nukkit.entity.mob.EntityCreeper;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.item.Item;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class Creeper extends WalkingMonster implements EntityExplosive {
 
-    public static final int NETWORK_ID = 33;
+    public static final int NETWORK_ID = EntityCreeper.NETWORK_ID;
 
     public static final int DATA_POWERED = 19;
 

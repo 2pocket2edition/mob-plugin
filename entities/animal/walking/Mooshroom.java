@@ -3,6 +3,7 @@ package net.twoptwoe.mobplugin.entities.animal.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.passive.EntityMooshroom;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class Mooshroom extends WalkingAnimal {
 
-    public static final int NETWORK_ID = 16;
+    public static final int NETWORK_ID = EntityMooshroom.NETWORK_ID;
 
     public Mooshroom(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

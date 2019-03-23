@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.jumping;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntityMagmaCube;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class MagmaCube extends WalkingMonster {
 
-    public static final int NETWORK_ID = 42;
+    public static final int NETWORK_ID = EntityMagmaCube.NETWORK_ID;
 
     public MagmaCube(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

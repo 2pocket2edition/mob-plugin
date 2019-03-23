@@ -8,6 +8,7 @@ package net.twoptwoe.mobplugin.entities.animal.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.passive.EntityMule;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 public class Mule extends WalkingAnimal {
 
-    public static final int NETWORK_ID = 25;
+    public static final int NETWORK_ID = EntityMule.NETWORK_ID;
 
     public Mule(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

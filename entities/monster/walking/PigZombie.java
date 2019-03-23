@@ -3,6 +3,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.mob.EntityZombiePigman;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -20,9 +21,9 @@ import java.util.List;
 
 public class PigZombie extends WalkingMonster {
 
-    public static final int NETWORK_ID = 36;
+    public static final int NETWORK_ID = EntityZombiePigman.NETWORK_ID;
 
-    int angry = 0;
+    public int angry = 0;
 
     public PigZombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

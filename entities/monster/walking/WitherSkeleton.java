@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntityWitherSkeleton;
 import cn.nukkit.item.ItemSwordStone;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -10,7 +11,7 @@ import net.twoptwoe.mobplugin.entities.monster.WalkingMonster;
 
 public class WitherSkeleton extends WalkingMonster {
 
-    public static final int NETWORK_ID = 48;
+    public static final int NETWORK_ID = EntityWitherSkeleton.NETWORK_ID;
 
     public WitherSkeleton(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

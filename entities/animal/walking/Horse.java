@@ -8,6 +8,7 @@ package net.twoptwoe.mobplugin.entities.animal.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.passive.EntityHorse;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 public class Horse extends WalkingAnimal {
 
-    public static final int NETWORK_ID = 23;
+    public static final int NETWORK_ID = EntityHorse.NETWORK_ID;
 
     public Horse(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

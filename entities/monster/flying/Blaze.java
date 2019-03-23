@@ -6,6 +6,7 @@ import cn.nukkit.block.BlockFenceGate;
 import cn.nukkit.block.BlockLiquid;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.mob.EntityBlaze;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
@@ -29,7 +30,7 @@ import java.util.List;
 
 public class Blaze extends FlyingMonster {
 
-    public static final int NETWORK_ID = 43;
+    public static final int NETWORK_ID = EntityBlaze.NETWORK_ID;
 
     public Blaze(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

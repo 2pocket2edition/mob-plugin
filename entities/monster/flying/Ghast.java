@@ -3,6 +3,7 @@ package net.twoptwoe.mobplugin.entities.monster.flying;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.mob.EntityGhast;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class Ghast extends FlyingMonster {
 
-    public static final int NETWORK_ID = 41;
+    public static final int NETWORK_ID = EntityGhast.NETWORK_ID;
 
     public Ghast(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntitySilverfish;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 
 public class Silverfish extends WalkingMonster {
 
-    public static final int NETWORK_ID = 39;
+    public static final int NETWORK_ID = EntitySilverfish.NETWORK_ID;
 
     public Silverfish(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

@@ -5,6 +5,7 @@ import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockLiquid;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.mob.EntitySpider;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class Spider extends WalkingMonster {
 
-    public static final int NETWORK_ID = 35;
+    public static final int NETWORK_ID = EntitySpider.NETWORK_ID;
 
     public Spider(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

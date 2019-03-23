@@ -96,12 +96,6 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
         return true;
     }
 
-    public boolean onInteract(Entity entity, Item item) {
-        //TODO: mating
-
-        return false;
-    }
-
     public void setInLove() {
         this.inLoveTicks = 600;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE);

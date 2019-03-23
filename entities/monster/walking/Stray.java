@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntityStray;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBow;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class Stray extends WalkingMonster {
 
-    public static final int NETWORK_ID = 46;
+    public static final int NETWORK_ID = EntityStray.NETWORK_ID;
 
     public Stray(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

@@ -3,6 +3,7 @@ package net.twoptwoe.mobplugin.entities.monster.flying;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.mob.EntityWither;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class Wither extends FlyingMonster {
 
-    public static final int NETWORK_ID = 52;
+    public static final int NETWORK_ID = EntityWither.NETWORK_ID;
 
     public Wither(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

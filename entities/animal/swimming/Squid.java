@@ -1,6 +1,7 @@
 package net.twoptwoe.mobplugin.entities.animal.swimming;
 
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.passive.EntitySquid;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemDye;
@@ -12,7 +13,7 @@ import net.twoptwoe.mobplugin.utils.Utils;
 
 public class Squid extends WalkingAnimal {
 
-    public static final int NETWORK_ID = 17;
+    public static final int NETWORK_ID = EntitySquid.NETWORK_ID;
 
     public Squid(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

@@ -1,6 +1,7 @@
 package net.twoptwoe.mobplugin.entities.animal.flying;
 
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.passive.EntityBat;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -8,7 +9,7 @@ import net.twoptwoe.mobplugin.entities.animal.FlyingAnimal;
 
 public class Bat extends FlyingAnimal {
 
-    public static final int NETWORK_ID = 19;
+    public static final int NETWORK_ID = EntityBat.NETWORK_ID;
 
     public Bat(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

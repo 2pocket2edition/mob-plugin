@@ -1,5 +1,6 @@
 package net.twoptwoe.mobplugin.entities.animal.flying;
 
+import cn.nukkit.entity.passive.EntityParrot;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class Parrot extends FlyingAnimal {
 
-    public static final int NETWORK_ID = 30;
+    public static final int NETWORK_ID = EntityParrot.NETWORK_ID;
 
     public Parrot(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

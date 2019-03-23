@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.item.EntityPotion;
+import cn.nukkit.entity.mob.EntityWitch;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
@@ -20,7 +21,7 @@ import net.twoptwoe.mobplugin.utils.Utils;
 
 public class Witch extends WalkingMonster {
 
-    public static final int NETWORK_ID = 45;
+    public static final int NETWORK_ID = EntityWitch.NETWORK_ID;
 
     private static final int ATTACK_TICKS = 20; // how many ticks does the witch need to attack
 

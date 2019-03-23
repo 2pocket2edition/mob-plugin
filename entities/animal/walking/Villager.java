@@ -1,6 +1,7 @@
 package net.twoptwoe.mobplugin.entities.animal.walking;
 
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.passive.EntityVillager;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import net.twoptwoe.mobplugin.entities.animal.WalkingAnimal;
@@ -9,7 +10,7 @@ import static cn.nukkit.entity.passive.EntityVillager.PROFESSION_GENERIC;
 
 public class Villager extends WalkingAnimal {
 
-    public static final int NETWORK_ID = 15;
+    public static final int NETWORK_ID = EntityVillager.NETWORK_ID;
 
     public Villager(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

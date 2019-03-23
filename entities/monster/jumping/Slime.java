@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.jumping;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntitySlime;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class Slime extends WalkingMonster {
 
-    public static final int NETWORK_ID = 37;
+    public static final int NETWORK_ID = EntitySlime.NETWORK_ID;
 
     public Slime(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

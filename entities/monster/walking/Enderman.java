@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntityEnderman;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class Enderman extends WalkingMonster {
 
-    public static final int NETWORK_ID = 38;
+    public static final int NETWORK_ID = EntityEnderman.NETWORK_ID;
 
     public Enderman(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

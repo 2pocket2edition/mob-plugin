@@ -92,6 +92,7 @@ import net.twoptwoe.mobplugin.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -126,6 +127,7 @@ public class MobPlugin extends PluginBase implements Listener {
         }
     };
     public static boolean MOB_AI_ENABLED = true;
+    @SuppressWarnings("unchecked")
     private static Class<? extends Entity>[]
             animals = new Class[]{
             Rabbit.class,
@@ -168,14 +170,7 @@ public class MobPlugin extends PluginBase implements Listener {
                     Enderman.class
             };
     private static ThreadLocal<HashSet<FullChunk>> spawnChunks = ThreadLocal.withInitial(HashSet::new);
-    private int counter = 0;
 
-    /**
-     * @param type
-     * @param source
-     * @param args
-     * @return
-     */
     public static Entity create(Object type, Position source, Object... args) {
         FullChunk chunk = source.getLevel().getChunk((int) source.x >> 4, (int) source.z >> 4, true);
         if (!chunk.isGenerated()) {
@@ -208,7 +203,12 @@ public class MobPlugin extends PluginBase implements Listener {
                     if (yPos <= 64) {
                         return;
                     }
-                    Entity entityObj = create(entity.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
+                    Entity entityObj;
+                    if (entity == Sheep.class)  {
+                        entityObj = create(entity.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()), Sheep.randomColor(new Random(((chunk.getX() & 0xFFFFFFFFL) << 32L) | (chunk.getZ() & 0xFFFFFFFFL))));
+                    } else {
+                        entityObj = create(entity.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
+                    }
                     event.getLevel().addEntity(entityObj);
                 }
                 break;
@@ -268,7 +268,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
             chunks.addAll(level.getChunks().values());
             chunks.forEach(chunk -> {
-                if (ow_day.get() && ThreadLocalRandom.current().nextInt(20) != 0)   {
+                if (ow_day.get() && ThreadLocalRandom.current().nextInt(20) != 0) {
                     return;
                 }
                 CHUNK:
@@ -307,6 +307,12 @@ public class MobPlugin extends PluginBase implements Listener {
         });
     }
 
+    protected static boolean isSlimeChunk(int chunkX, int chunkZ)   {
+        return ((chunkX * 1461535919 ^ chunkZ * 930001883) & 0xF) == 0;
+    }
+
+    private int counter = 0;
+
     @Override
     public void onLoad() {
         registerEntities();
@@ -329,7 +335,6 @@ public class MobPlugin extends PluginBase implements Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().toLowerCase().equals("mob")) {
-
             if (args.length == 0) {
                 sender.sendMessage("-- MobPlugin 1.0 --");
                 sender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");

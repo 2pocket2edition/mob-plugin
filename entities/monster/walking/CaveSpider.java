@@ -2,6 +2,7 @@ package net.twoptwoe.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.EntityCaveSpider;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class CaveSpider extends Spider {
 
-    public static final int NETWORK_ID = 40;
+    public static final int NETWORK_ID = EntityCaveSpider.NETWORK_ID;
 
     public CaveSpider(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
