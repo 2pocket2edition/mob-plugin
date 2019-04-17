@@ -153,7 +153,7 @@ public abstract class BaseEntity extends EntityCreature {
     }
 
     @Override
-    protected void updateMovement() {
+    public void updateMovement() {
         if (MobPlugin.MOB_AI_ENABLED) {
             if (this.lastX != this.x || this.lastY != this.y || this.lastZ != this.z || this.lastYaw != this.yaw || this.lastPitch != this.pitch) {
                 this.lastX = this.x;
